@@ -21,7 +21,6 @@ async function start() {
             clickOnPin(jsonData[i].id);
         });
     }
-
 }
 
 async function loadJson(path) {
@@ -30,10 +29,35 @@ async function loadJson(path) {
 }
 
 function clickOnPin(pinID) {
-    alert('Pin #' + pinID + 
-        '\nCoordinate: ' + jsonData.find(pin => pin.id === pinID).location_lat + ', ' + jsonData.find(pin => pin.id === pinID).location_lon + 
-        '\nStato: ' + jsonData.find(pin => pin.id === pinID).status + 
+    alert('Pin #' + pinID +
+        '\nCoordinate: ' + jsonData.find(pin => pin.id === pinID).location_lat + ', ' + jsonData.find(pin => pin.id === pinID).location_lon +
+        '\nStato: ' + jsonData.find(pin => pin.id === pinID).status +
         '\nOperativo: ' + jsonData.find(pin => pin.id === pinID).operative
+        //https://www.google.com/maps?saddr=[coord attuali]&daddr=[coord idrante]
     );
-    
+
+}
+
+async function getLocalCoordinates() {
+    return new Promise((resolve, reject) => {
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const coord = [
+                        position.coords.latitude,
+                        position.coords.longitude
+                    ];
+                    resolve(coord);
+                },
+                (error) => {
+                    console.error("Errore posizione:", error);
+                    reject(error);
+                }
+            );
+        } else {
+            const errorMess = "Localizzazione non supportata";
+            console.error(errorMsg);
+            reject(new Error(errorMsg));
+        }
+    });
 }
