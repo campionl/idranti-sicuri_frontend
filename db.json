@@ -4,49 +4,99 @@
         "location_lat": 45.427637,
         "location_lon": 10.972936,
         "imgs": ["imm0.png", "imm1.png"],
-        "status": "Presenza tappi",
-        "operative": true,
-        "accessibility": "- - info accessibilità - -",
-        "type": 1
+        "operative": false,
+        "campo1": "",
+        "campo2": "",
+        "campo3": ""
     },
     {
         "id": "0002",
         "location_lat": 45.435229,
         "location_lon": 10.979726,
-        "imgs": ["imm2.png", "imm3.png"],
-        "status": "OK",
-        "operative": false,
-        "accessibility": "- - info accessibilità - -",
-        "type": 2
+        "imgs": ["imm0.png", "imm1.png"],
+        "operative": true,
+        "campo1": "",
+        "campo2": "",
+        "campo3": ""
     },
     {
         "id": "0003",
         "location_lat": 45.439177,
         "location_lon": 10.993194,
-        "imgs": ["imm4.png", "imm5.png"],
-        "status": "OK",
+        "imgs": ["imm0.png", "imm1.png"],
         "operative": true,
-        "accessibility": "- - info accessibilità - -",
-        "type": 2
+        "campo1": "",
+        "campo2": "",
+        "campo3": ""
     },
     {
         "id": "0004",
         "location_lat": 45.443540,
         "location_lon": 10.996738,
-        "imgs": ["imm6.png", "imm7.png"],
-        "status": "Presenza tappi",
+        "imgs": ["imm0.png", "imm1.png"],
         "operative": false,
-        "accessibility": "- - info accessibilità - -",
-        "type": 1
+        "campo1": "",
+        "campo2": "",
+        "campo3": ""
     },
     {
         "id": "0005",
         "location_lat": 45.442943,
         "location_lon": 10.999343,
-        "imgs": ["imm8.png", "imm9.png"],
-        "status": "OK",
+        "imgs": ["imm0.png", "imm1.png"],
+        "operative": false,
+        "campo1": "",
+        "campo2": "",
+        "campo3": ""
+    },
+    {
+        "id": "0006",
+        "location_lat": 45.444923,
+        "location_lon": 10.999319,
+        "imgs": ["imm0.png", "imm1.png"],
         "operative": true,
-        "accessibility": "- - info accessibilità - -",
-        "type": 1
+        "campo1": "",
+        "campo2": "",
+        "campo3": ""
+    },
+    {
+        "id": "0007",
+        "location_lat": 45.446924,
+        "location_lon": 10.996381,
+        "imgs": ["imm0.png", "imm1.png"],
+        "operative": false,
+        "campo1": "",
+        "campo2": "",
+        "campo3": ""
+    },
+    {
+        "id": "0008",
+        "location_lat": 45.445770,
+        "location_lon": 10.957165,
+        "imgs": ["imm0.png", "imm1.png"],
+        "operative": true,
+        "campo1": "",
+        "campo2": "",
+        "campo3": ""
+    },
+    {
+        "id": "0009",
+        "location_lat": 45.432887,
+        "location_lon": 10.996063,
+        "imgs": ["imm0.png", "imm1.png"],
+        "operative": true,
+        "campo1": "",
+        "campo2": "",
+        "campo3": ""
+    },
+    {
+        "id": "0010",
+        "location_lat": 45.416322,
+        "location_lon": 10.969517,
+        "imgs": ["imm0.png", "imm1.png"],
+        "operative": false,
+        "campo1": "",
+        "campo2": "",
+        "campo3": ""
     }
 ]
