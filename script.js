@@ -1,5 +1,6 @@
 let jsonData = [];
 let geolocPerm = null;
+let geoloc = [];
 
 async function start() {
 
@@ -9,22 +10,15 @@ async function start() {
     // aggiunta layer OpenStreetMap
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap contributors' }).addTo(map);
 
+    // permessi posizione e coord attuali
     geolocPerm = await askGeolocationPermission();
-
-    // pallino posizione utente
-    map.locate({ watch: true });
-    map.on('locationfound', function (e) {
-        const userMarker = L.circleMarker(e.latlng, {
-            radius: 8,
-            color: '#ffffff',
-            fillColor: '#4444ff',
-            fillOpacity: 0.7
-        }).addTo(map);
-    });
-    map.on('locationerror', function (e) {
-        console.error("Impossibile determinare la posizione: " + e.message);
-        geolocPerm = false;
-    });
+    if (geolocPerm) {
+        try {
+            geoloc = await getLocalCoordinates();
+        } catch (e) {
+            console.error("Errore nel recuperare la posizione:", e);
+        }
+    }
 
     // carica json
     await loadJson('db.json');
@@ -48,67 +42,46 @@ async function start() {
         shadowSize: [41, 41]
     });
 
-    //lettura presenza / assenza permessi posizione
-    geolocPerm = false;
-    const permissionStatus = await navigator.permissions.query({ name: 'geolocation' });
-    try {
-        const permissionStatus = await navigator.permissions.query({ name: 'geolocation' });
-        if (permissionStatus.state === 'granted') {
-            geolocPerm = true;
-        } else {
-            geolocPerm = false;
-        }
-        permissionStatus.onchange = () => {
-            geolocPerm = permissionStatus.state === 'granted';
-        };
-    } catch (err) {
-        console.error("Errore posizione: ", err);
-        geolocPerm = false;
-    }
+    const userPin = new L.Icon({
+        iconUrl: './assets/userMarker.png',
+        iconSize: [20, 20],
+        iconAnchor: [10, 10],
+    });
 
     // crea i pin
-    let markers = [];
-    let pos = null;
-    if (geolocPerm) {
-        pos = await getLocalCoordinates();
-        for (let i = 0; i < jsonData.length; i++) {
-            if (jsonData[i].operative) {
-                markers[i] = L.marker([jsonData[i].location_lat, jsonData[i].location_lon], { icon: redPin }).addTo(map).bindPopup(
-                    '<h1 id="id_pin">' + jsonData[i].id + '</h1>' +
-                    '<p>Coordinate: ' + jsonData[i].location_lat + ', ' + jsonData[i].location_lon + '</p>' +
-                    '<p>Operativo: Sì</p>' +
-                    '<a href=\'https://www.google.com/maps?saddr=' + pos[0] + ',' + pos[1] + '&daddr=' + jsonData[i].location_lat + ',' + jsonData[i].location_lon + '\'><button>Apri in Maps</button></a>' +
-                    '<button disabled>Vedi dettagli</button>'
-                );
-            } else {
-                markers[i] = L.marker([jsonData[i].location_lat, jsonData[i].location_lon], { icon: greyPin }).addTo(map).bindPopup(
-                    '<h1 id="id_pin">' + jsonData[i].id + '</h1>' +
-                    '<p>Coordinate: ' + jsonData[i].location_lat + ', ' + jsonData[i].location_lon + '</p>' +
-                    '<p>Operativo: No</p>' +
-                    '<a href=\'https://www.google.com/maps?saddr=' + pos[0] + ',' + pos[1] + '&daddr=' + jsonData[i].location_lat + ',' + jsonData[i].location_lon + '\'><button>Apri in Maps</button></a>' +
-                    '<button disabled>Vedi dettagli</button>'
-                );
-            }
+    jsonData.forEach((item, i) => {
+        let popup = `
+            <h1 id="id_pin">${item.id}</h1>
+            <p>Coordinate: ${item.location_lat}, ${item.location_lon}</p>
+            <p>Operativo: ${item.operative ? 'Sì' : 'No'}</p>
+        `;
+
+        if (geolocPerm && item.operative) {
+            popup += `<a href="https://www.google.com/maps?saddr=${geoloc[0]},${geoloc[1]}&daddr=${item.location_lat},${item.location_lon}"><button>Apri in Maps</button></a>`;
+        } else {
+            popup += `<a href="#"><button disabled>Apri in Maps</button></a>`;
         }
-    } else {
-        for (let i = 0; i < jsonData.length; i++) {
-            if (jsonData[i].operative) {
-                markers[i] = L.marker([jsonData[i].location_lat, jsonData[i].location_lon], { icon: redPin }).addTo(map).bindPopup(
-                    '<h1 id="id_pin">' + jsonData[i].id + '</h1>' +
-                    '<p>Coordinate: ' + jsonData[i].location_lat + ', ' + jsonData[i].location_lon + '</p>' +
-                    '<p>Operativo: Sì</p>' +
-                    '<a href=\'#\'><button disabled>Apri in Maps</button></a>' +
-                    '<button disabled>Vedi dettagli</button>'
-                );
-            } else {
-                markers[i] = L.marker([jsonData[i].location_lat, jsonData[i].location_lon], { icon: greyPin }).addTo(map).bindPopup(
-                    '<h1 id="id_pin">' + jsonData[i].id + '</h1>' +
-                    '<p>Coordinate: ' + jsonData[i].location_lat + ', ' + jsonData[i].location_lon + '</p>' +
-                    '<p>Operativo: No</p>' +
-                    '<a href=\'#\'><button disabled>Apri in Maps</button></a>' +
-                    '<button disabled>Vedi dettagli</button>'
-                );
-            }
+
+        popup += `<button disabled>Vedi dettagli</button>`;
+        const icon = item.operative ? redPin : greyPin;
+        L.marker([item.location_lat, item.location_lon], { icon }).addTo(map).bindPopup(popup);
+    });
+
+    // 
+    if (geolocPerm) {
+        try {
+            let userMarker = null;
+            map.locate({ watch: true, setView: false });
+            map.on('locationfound', function (e) {
+                if (!userMarker) {
+                    userMarker = L.marker(e.latlng, { icon: userPin }).addTo(map);
+                    map.flyTo(e.latlng, 15);
+                } else {
+                    userMarker.setLatLng(e.latlng);
+                }
+            });
+        } catch (e) {
+            console.error("Errore nel recuperare la posizione:", e);
         }
     }
 
@@ -160,5 +133,11 @@ async function askGeolocationPermission() {
                 }
             );
         }
+    });
+}
+
+function attendiFineAnim(map) {
+    return new Promise(resolve => {
+        map.once('moveend', resolve);
     });
 }
