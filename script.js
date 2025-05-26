@@ -62,12 +62,12 @@ async function start() {
             popup += `<a href="#"><button disabled>Apri in Maps</button></a>`;
         }
 
-        popup += `<button disabled>Vedi dettagli</button>`;
+        popup += `<a href='./info_idr.html?${item.id}'><button>Vedi dettagli</button></a>`;
         const icon = item.operative ? redPin : greyPin;
         L.marker([item.location_lat, item.location_lon], { icon }).addTo(map).bindPopup(popup);
     });
 
-    // 
+    // flyTo e pallino posizione utente
     if (geolocPerm) {
         try {
             let userMarker = null;

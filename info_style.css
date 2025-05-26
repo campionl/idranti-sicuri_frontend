@@ -1,0 +1,39 @@
+body {
+    margin: 0;
+    font-family: sans-serif;
+}
+
+#navbar {
+    height: 5vh;
+    background-color: #bb0000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+}
+
+#navbar-left a {
+    font-weight: bold;
+    text-decoration: none;
+    color: #f0f0f0;
+    font-size: 1.2rem;
+}
+
+#navbar-left a:hover{
+    text-decoration: underline;
+}
+
+#navbar-right a {
+    text-decoration: underline;
+    color: #f0f0f0;
+    opacity: 0.5;
+    font-weight: 500;
+}
+
+#page_content{
+    margin: 1%;
+}
+
+.keys{
+    font-weight: bold;
+}

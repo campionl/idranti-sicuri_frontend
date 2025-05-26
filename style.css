@@ -3,7 +3,7 @@ body {
   font-family: sans-serif;
 }
 
-.navbar {
+#navbar {
   height: 5vh;
   background-color: #bb0000;
   display: flex;
@@ -12,13 +12,13 @@ body {
   padding: 0 1rem;
 }
 
-.navbar-left {
+#navbar-left {
   font-weight: bold;
   color: #f0f0f0;
   font-size: 1.2rem;
 }
 
-.navbar-right a {
+#navbar-right a {
   text-decoration: underline;
   color: #f0f0f0;
   opacity: 0.5;
