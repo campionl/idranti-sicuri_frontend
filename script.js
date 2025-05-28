@@ -56,13 +56,13 @@ async function start() {
             <p>Operativo: ${item.operative ? 'Sì' : 'No'}</p>
         `;
 
-        if (geolocPerm && item.operative) {
+        if (geolocPerm) {
             popup += `<a href="https://www.google.com/maps?saddr=${geoloc[0]},${geoloc[1]}&daddr=${item.location_lat},${item.location_lon}"><button>Apri in Maps</button></a>`;
         } else {
             popup += `<a href="#"><button disabled>Apri in Maps</button></a>`;
         }
 
-        popup += `<a href='./info_idr.html?${item.id}'><button>Vedi dettagli</button></a>`;
+        popup += `<a href='./info_idr/index.html?${item.id}'><button>Vedi dettagli</button></a>`;
         const icon = item.operative ? redPin : greyPin;
         L.marker([item.location_lat, item.location_lon], { icon }).addTo(map).bindPopup(popup);
     });

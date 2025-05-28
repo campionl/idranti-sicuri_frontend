@@ -3,14 +3,14 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="info_style.css">
-    <script src="info_script.js"></script>
+    <link rel="stylesheet" href="./style.css">
+    <script src="./script.js"></script>
     <title>Dettagli idrante</title>
 </head>
 
 <body onload="start()">
     <nav id="navbar">
-        <div id="navbar-left"><a href="./index.html">Idranti Sicuri VR</a></div>
+        <div id="navbar-left"><a href="../index.html">Idranti Sicuri VR</a></div>
         <div id="navbar-right"><a href="#">Segnala idrante</a></div>
     </nav>
     <div id="page_content">
@@ -40,7 +40,12 @@
             </tr>
             <tr>
                 <td class="keys">Immagini</td>
-                <td class="vals" id="info_imgs" style="display: flex;"><img id="info_img1" style="height: 150px;"><img id="info_img2" style="height: 150px;"></td>
+                <td class="vals" id="info_imgs" style="display: flex; padding: 10;">
+                    <span id="info_img_error">Non è presente nessuna immagine</span>
+                    <a id="info_img1_link" style="display: none;"><img id="info_img1" style="height: 150px;"></a>
+                    <a id="info_img2_link" style="display: none;"><img id="info_img2" style="height: 150px;"></a>
+                    <a id="info_img3_link" style="display: none;"><img id="info_img3" style="height: 150px;"></a>
+                </td>
             </tr>
             <tr>
                 <td class="keys">Operativo</td>

@@ -3,7 +3,10 @@
         "id": "0001",
         "location_lat": 45.427637,
         "location_lon": 10.972936,
-        "imgs": ["imm0.png", "imm1.png"],
+        "imgs": [
+            "jD1NpRq5vX.jpeg",
+            "B3vNp7zK1Y.jpeg"
+        ],
         "operative": false,
         "campo1": "",
         "campo2": "",
@@ -13,7 +16,11 @@
         "id": "0002",
         "location_lat": 45.435229,
         "location_lon": 10.979726,
-        "imgs": ["imm2.png", "imm3.png"],
+        "imgs": [
+            "KzL8mTqY7W.jpeg",
+            "a9X2mLq7Zt.jpeg",
+            "Xy7Bz9WlQe.jpeg"
+        ],
         "operative": true,
         "campo1": "",
         "campo2": "",
@@ -23,7 +30,9 @@
         "id": "0003",
         "location_lat": 45.439177,
         "location_lon": 10.993194,
-        "imgs": ["imm4.png", "imm5.png"],
+        "imgs": [
+            "wP4zXyMv1J.jpeg"
+        ],
         "operative": true,
         "campo1": "",
         "campo2": "",
@@ -31,9 +40,9 @@
     },
     {
         "id": "0004",
-        "location_lat": 45.443540,
+        "location_lat": 45.44354,
         "location_lon": 10.996738,
-        "imgs": ["imm6.png", "imm7.png"],
+        "imgs": [],
         "operative": false,
         "campo1": "",
         "campo2": "",
@@ -43,7 +52,10 @@
         "id": "0005",
         "location_lat": 45.442943,
         "location_lon": 10.999343,
-        "imgs": ["imm9.png", "imm8.png"],
+        "imgs": [
+            "mZ3kV1pRcD.jpeg",
+            "Qw8rLxTz9A.jpeg"
+        ],
         "operative": false,
         "campo1": "",
         "campo2": "",
@@ -53,7 +65,9 @@
         "id": "0006",
         "location_lat": 45.444923,
         "location_lon": 10.999319,
-        "imgs": ["imm0.png", "imm1.png"],
+        "imgs": [
+            "wP4zXyMv1J.jpeg"
+        ],
         "operative": true,
         "campo1": "",
         "campo2": "",
@@ -63,7 +77,11 @@
         "id": "0007",
         "location_lat": 45.446924,
         "location_lon": 10.996381,
-        "imgs": ["imm3.png", "imm1.png"],
+        "imgs": [
+            "Xy7Bz9WlQe.jpeg",
+            "mZ3kV1pRcD.jpeg",
+            "Qw8rLxTz9A.jpeg"
+        ],
         "operative": false,
         "campo1": "",
         "campo2": "",
@@ -71,9 +89,9 @@
     },
     {
         "id": "0008",
-        "location_lat": 45.445770,
+        "location_lat": 45.44577,
         "location_lon": 10.957165,
-        "imgs": ["imm7.png", "imm1.png"],
+        "imgs": [],
         "operative": true,
         "campo1": "",
         "campo2": "",
@@ -83,7 +101,10 @@
         "id": "0009",
         "location_lat": 45.432887,
         "location_lon": 10.996063,
-        "imgs": ["imm2.png", "imm4.png"],
+        "imgs": [
+            "KzL8mTqY7W.jpeg",
+            "wP4zXyMv1J.jpeg"
+        ],
         "operative": true,
         "campo1": "",
         "campo2": "",
@@ -93,7 +114,9 @@
         "id": "0010",
         "location_lat": 45.416322,
         "location_lon": 10.969517,
-        "imgs": ["imm8.png", "imm4.png"],
+        "imgs": [
+            "wP4zXyMv1J.jpeg"
+        ],
         "operative": false,
         "campo1": "",
         "campo2": "",

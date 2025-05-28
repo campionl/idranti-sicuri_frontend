@@ -1,0 +1,23 @@
+#navbar {
+    height: 5vh;
+    background-color: #bb0000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+}
+
+#navbar-left a {
+    font-weight: bold;
+    text-decoration: none;
+    color: #f0f0f0;
+    font-size: 1.2rem;
+}
+
+#navbar-left a:hover {
+    text-decoration: underline;
+}
+
+#page_content {
+    margin: 1%;
+}
