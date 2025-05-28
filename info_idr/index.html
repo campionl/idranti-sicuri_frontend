@@ -11,22 +11,22 @@
 <body onload="start()">
     <nav id="navbar">
         <div id="navbar-left"><a href="../index.html">Idranti Sicuri VR</a></div>
-        <div id="navbar-right"><a href="#">Segnala idrante</a></div>
+        <div id="navbar-right"><a href="#"><button>Segnala idrante</button></a></div>
     </nav>
     <div id="page_content">
-        <h1>Dettagli idrante</h1>
-        <form>
-            <h3>Inserire ID idrante:</h3>
+        <h1 style="text-align: center">Dettagli idrante</h1>
+        <form id ="insert_code">
+            <h3 style="margin-bottom: 22px">Inserire ID idrante:</h3>
             <input id="IDidr_input" type="text" placeholder="ID idrante">
-            <input onclick="confButtPressed()" type="button" value="Conferma">
+            <input onclick="confButtPressed()" type="button" id = "button_conf" value="Conferma">
         </form>
 
         <hr>
 
         <span id="error" style="display: none;">Immettere un ID valido</span>
 
-        <table id="info_table" style="display: none;">
-            <tr>
+        <table id="info_table">
+            <tr id ="aaa">
                 <td class="keys">ID</td>
                 <td class="vals" id="info_id"></td>
             </tr>
@@ -40,11 +40,11 @@
             </tr>
             <tr>
                 <td class="keys">Immagini</td>
-                <td class="vals" id="info_imgs" style="display: flex; padding: 10;">
+                <td class="vals" id="info_imgs">
                     <span id="info_img_error">Non è presente nessuna immagine</span>
-                    <a id="info_img1_link" style="display: none;"><img id="info_img1" style="height: 150px;"></a>
-                    <a id="info_img2_link" style="display: none;"><img id="info_img2" style="height: 150px;"></a>
-                    <a id="info_img3_link" style="display: none;"><img id="info_img3" style="height: 150px;"></a>
+                    <a id="info_img1_link"><img id="info_img1" style="height: 150px;"></a>
+                    <a id="info_img2_link"><img id="info_img2" style="height: 150px;"></a>
+                    <a id="info_img3_link"><img id="info_img3" style="height: 150px;"></a>
                 </td>
             </tr>
             <tr>

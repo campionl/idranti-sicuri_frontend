@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  font-family: sans-serif;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 #navbar {
@@ -18,11 +18,22 @@ body {
   font-size: 1.2rem;
 }
 
-#navbar-right a {
-  text-decoration: underline;
-  color: #f0f0f0;
-  opacity: 0.5;
-  font-weight: 500;
+#navbar-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+  font-weight: bold;
+  border-radius: 15px;
+  border: none;
+  opacity: 0.8;
+  padding: 3px 10px;
+  font-size: 16px;
+  background-color: #d32f2f;
+  color: white;
+  margin-inline: 3px;
 }
 
 #mappa {
