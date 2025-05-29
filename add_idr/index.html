@@ -15,56 +15,59 @@
     <div id="page_content">
         <h1>Segnalzione di un idrante</h1>
         <hr>
-        <div id = "tables">
+        <div id="tables">
             <table class="ins_table" id="info_table">
                 <tr>
                     <td class="keys">Latitudine</td>
-                    <td class="vals" id="info_id"><input type="text"></td>
+                    <td class="vals"><input id="info_id_lat" type="text"></td>
                 </tr>
                 <tr>
                     <td class="keys">Longitudine</td>
-                    <td class="vals" id="info_id"><input type="text"></td>
+                    <td class="vals"><input id="info_id_lon" type="text"></td>
                 </tr>
                 <tr>
                     <td class="keys">Immagini</td>
-                    <td><button>+</button></td>
+                    <td>
+                        <input type="file" id="insert_img" name="immagini" accept="image/*" multiple
+                            onchange="previewImages(event)" placeholder="imgs_input">
+                        <div id="preview" style="display: flex; gap: 8px; margin-top: 8px;"></div>
                     </td>
                 </tr>
                 <tr>
                     <td class="keys">Operativo</td>
-                   <td>
-                    <form>
-                        <input type="radio" name="operativo" id="operativo_si" value="si">
-                        <label for="operativo_si">si</label>
-                        <input type="radio" name="operativo" id="operativo_no" value="no">
-                        <label for="operativo_no">no</label>
-                        <input type="radio" name="operativo" id="operativo_non_pervenuto" value="non_pervenuto">
-                        <label for="operativo_non_pervenuto">non pervenuto</label>
-                        <button id="x" type="button" onclick="
-                            document.querySelectorAll('input[name=operativo]').forEach(r => r.checked = false);
-                        ">x</button>
-                    </form>
-                   </td>
+                    <td>
+                        <form>
+                            <input type="radio" name="operativo" id="operative" value="si">
+                            <label for="operativo_si">si</label>
+                            <input type="radio" name="operativo" id="n_operative" value="no">
+                            <label for="operativo_no">no</label>
+                            <input type="radio" name="operativo" id="?operative" value="non_pervenuto">
+                            <label for="operativo_non_pervenuto">non pervenuto</label>
+                        </form>
+                    </td>
                 </tr>
                 <tr>
                     <td class="keys">Campo 1</td>
-                    <td class="vals" id="info_id"><input type="text"></td>
+                    <td class="vals"><input id="camp_1" type="text"></td>
                 </tr>
                 <tr>
                     <td class="keys">Campo 2</td>
-                    <td class="vals" id="info_id"><input type="text"></td>
+                    <td class="vals"><input id="camp_2" type="text"></td>
                 </tr>
                 <tr>
                     <td class="keys">Campo 3</td>
-                    <td class="vals" id="info_id"><input type="text"></td>
+                    <td class="vals"><input id="camp_3" type="text"></td>
                 </tr>
                 <tr>
-                    <td></td><td><button id = "conferma">Conferma</button></td>
+                    <td></td>
+                    <td><button id="conferma" onclick="insert_data()">Conferma</button></td>
                 </tr>
             </table>
             <table class="ins_table" id="select_on_map">
                 <tr>
-                    <td><div id="mappa"></div></td>
+                    <td>
+                        <div id="mappa"></div>
+                    </td>
                 </tr>
             </table>
         </div>
