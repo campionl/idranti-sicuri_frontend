@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 #navbar {
@@ -21,31 +21,32 @@ body {
 
 
 #navbar-right {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 button {
-  font-weight: bold;
-  border-radius: 15px;
-  border: none;
-  opacity: 0.8;
-  padding: 3px 10px;
-  font-size: 16px;
-  background-color: #d32f2f;
-  color: white;
+    font-weight: bold;
+    border-radius: 15px;
+    border: none;
+    opacity: 0.8;
+    padding: 3px 10px;
+    font-size: 16px;
+    background-color: #ff0000;
+    color: white;
 }
 
 #button_conf {
-  font-weight: bold;
-  border-radius: 15px;
-  border: none;
-  opacity: 0.8;
-  padding: 3px 10px;
-  font-size: 16px;
-  background-color: #d32f2f;
-  color: white;
+    font-weight: bold;
+    border-radius: 15px;
+    border: none;
+    opacity: 0.8;
+    padding: 3px 10px;
+    font-size: 16px;
+    background-color: #ff0000;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.15);
+    color: white;
 }
 
 #insert_code {
@@ -67,7 +68,7 @@ button {
 
 
 
-.keys ,
+.keys,
 .vals {
     padding: 10px;
 }
@@ -76,12 +77,14 @@ button {
     border-radius: 15px;
     text-indent: 10px;
     height: 20px;
+    border: 1px solid gray;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.15);
 }
 
-#page_content{
+#page_content {
     margin: 1%;
 }
 
-.keys{
+.keys {
     font-weight: bold;
 }
