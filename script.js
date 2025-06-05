@@ -21,8 +21,24 @@ async function start() {
     }
 
     // carica json
-    await loadJson('db.json');
+    await loadJson('./db.json');
 
+    //carica i pin (idranti)
+    loadPins(map);
+
+    // flyTo e pallino posizione utente
+    if (geolocPerm) {
+        loadUserMarker(map);
+    }
+
+}
+
+async function loadJson(path) {
+    const response = await fetch(path);
+    jsonData = await response.json();
+}
+
+function loadPins(map) {
     // pin rosso e grigio
     const redPin = new L.Icon({
         iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
@@ -42,12 +58,6 @@ async function start() {
         shadowSize: [41, 41]
     });
 
-    const userPin = new L.Icon({
-        iconUrl: './assets/userMarker.png',
-        iconSize: [20, 20],
-        iconAnchor: [10, 10],
-    });
-
     // crea i pin
     jsonData.forEach((item, i) => {
         let popup = `
@@ -55,7 +65,7 @@ async function start() {
             <p>Coordinate: ${item.location_lat}, ${item.location_lon}</p>
             <p>Operativo: ${item.operative ? 'Sì' : 'No'}</p>
         `;
-        
+
         if (geolocPerm) {
             popup += `<a href="https://www.google.com/maps?saddr=${geoloc[0]},${geoloc[1]}&daddr=${item.location_lat},${item.location_lon}"><button id="button_info_pin">Apri in Maps</button></a>`;
         } else {
@@ -66,30 +76,50 @@ async function start() {
         const icon = item.operative ? redPin : greyPin;
         L.marker([item.location_lat, item.location_lon], { icon }).addTo(map).bindPopup(popup);
     });
-
-    // flyTo e pallino posizione utente
-    if (geolocPerm) {
-        try {
-            let userMarker = null;
-            map.locate({ watch: true, setView: false });
-            map.on('locationfound', function (e) {
-                if (!userMarker) {
-                    userMarker = L.marker(e.latlng, { icon: userPin }).addTo(map);
-                    map.flyTo(e.latlng, 15);
-                } else {
-                    userMarker.setLatLng(e.latlng);
-                }
-            });
-        } catch (e) {
-            console.error("Errore nel recuperare la posizione:", e);
-        }
-    }
-
 }
 
-async function loadJson(path) {
-    const response = await fetch(path);
-    jsonData = await response.json();
+function loadUserMarker(map) {
+    // pin posizione utente
+    const userPin = new L.Icon({
+        iconUrl: '../assets/userMarker.png',
+        iconSize: [20, 20],
+        iconAnchor: [10, 10],
+    });
+
+    try {
+        let userMarker = null;
+        map.locate({ watch: true, setView: false });
+        map.on('locationfound', function (e) {
+            if (!userMarker) {
+                userMarker = L.marker(e.latlng, { icon: userPin }).addTo(map);
+                map.flyTo(e.latlng, 15);
+            } else {
+                userMarker.setLatLng(e.latlng);
+            }
+        });
+    } catch (e) {
+        console.error("Errore nel recuperare la posizione:", e);
+    }
+}
+
+async function askGeolocationPermission() {
+    return new Promise((resolve) => {
+        if (!("geolocation" in navigator)) {
+            geolocPerm = false;
+            resolve(false);
+        } else {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    geolocPerm = true;
+                    resolve(true);
+                },
+                (error) => {
+                    geolocPerm = false;
+                    resolve(false);
+                }
+            );
+        }
+    });
 }
 
 async function getLocalCoordinates() {
@@ -113,31 +143,5 @@ async function getLocalCoordinates() {
             console.error(errorMsg);
             reject(new Error(errorMsg));
         }
-    });
-}
-
-async function askGeolocationPermission() {
-    return new Promise((resolve) => {
-        if (!("geolocation" in navigator)) {
-            geolocPerm = false;
-            resolve(false);
-        } else {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    geolocPerm = true;
-                    resolve(true);
-                },
-                (error) => {
-                    geolocPerm = false;
-                    resolve(false);
-                }
-            );
-        }
-    });
-}
-
-function attendiFineAnim(map) {
-    return new Promise(resolve => {
-        map.once('moveend', resolve);
     });
 }

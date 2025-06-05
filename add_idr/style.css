@@ -1,31 +1,5 @@
 body {
-    margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     text-align: center;
-}
-
-#navbar {
-    height: 5vh;
-    background-color: #bb0000;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 1rem;
-}
-
-#navbar-left a {
-    font-weight: bold;
-    text-decoration: none;
-    color: #f0f0f0;
-    font-size: 1.2rem;
-}
-
-#navbar-left a:hover {
-    text-decoration: underline;
-}
-
-#page_content {
-    margin: 1%;
 }
 
 .ins_table {
@@ -45,9 +19,18 @@ body {
 }
 
 #mappa {
-    height: 60vh;
-    width: 100vh;
-    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+}
+
+#select_on_map {
+    width: 600px;
+    height: 400px;
+    padding: 10px;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .keys,

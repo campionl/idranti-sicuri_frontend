@@ -4,11 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="../body_navbar.css">
     <script src="./script.js"></script>
     <title>Nuova segnalazione</title>
+
+    <!-- CSS e JS di Leaflet-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 
-<body>
+<body onload="loadMap();">
     <nav id="navbar">
         <div id="navbar-left"><a href="../index.html">Idranti Sicuri VR</a></div>
     </nav>
@@ -28,8 +33,13 @@
                 <tr>
                     <td class="keys">Immagini</td>
                     <td>
-                        <input type="file" id="insert_img" name="immagini" accept="image/*" multiple
-                            onchange="previewImages(event)" placeholder="imgs_input">
+                        <input type="file" id="insert_img" name="immagini" accept=".jpeg,.jpg,.png" multiple
+                            onchange="previewImages(event)" placeholder="imgs_input" title="Carica immagini"
+                            aria-label="Carica immagini" style="display: none;">
+                        <label for="insert_img" id="upload_label"
+                            style="display: inline-block; padding: 6px 12px; background-color: #007bff; color: white; border-radius: 4px; cursor: pointer;">
+                            Carica immagini
+                        </label>
                         <div id="preview" style="display: flex; gap: 8px; margin-top: 8px;"></div>
                     </td>
                 </tr>
