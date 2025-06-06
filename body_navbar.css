@@ -25,60 +25,48 @@ body {
     color: #f0f0f0;
 }
 
-#navbar-left a::after {
-    content: "";
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background-color: #f0f0f0;
-    transform: scaleX(0);
-    transform-origin: center;
-    transition: transform 0.3s ease;
-}
-
-#navbar-left a:hover::after {
-    transform: scaleX(1);
-}
-
 #navbar-right {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.button-with-hover {
-    transition: transform 0.2s ease;
-}
-
-.button-with-hover:hover:not(:disabled) {
-    transform: scale(1.1);
-}
-
-.button-with-hover:active:not(:disabled) {
-    transform: scale(0.95);
-}
-
-/* button generici */
-button {
+button, .btn {
     font-weight: bold;
     border-radius: 15px;
-    border: none;
     padding: 3px 10px;
     font-size: 16px;
-    background-color: #ff0000;
-    color: white;
-    margin-inline: 3px;
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.15);
+    margin: 0 4px;
     cursor: pointer;
-    transition: transform 0.2s ease;
+    box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* button disabilitati */
-button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+.btn-primary {
+    background-color: #ff0000;
+    color: white;
+    border: none;
+}
+
+.btn-primary:disabled {
     background-color: #999999;
+    color: #eeeeee;
+    cursor: not-allowed;
+    opacity: 0.6;
+    box-shadow: none;
+}
+
+.btn-secondary {
+    background-color: #ffffff;
+    color: #333333;
+    border: 2px solid #cccccc;
+}
+
+.btn-secondary:disabled {
+    background-color: #f9f9f9;
+    color: #aaaaaa;
+    border-color: #dddddd;
+    cursor: not-allowed;
+    opacity: 0.6;
     box-shadow: none;
 }

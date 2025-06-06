@@ -12,14 +12,15 @@
 <body onload="start()">
     <nav id="navbar">
         <div id="navbar-left"><a href="../index.html">Idranti Sicuri VR</a></div>
-        <div id="navbar-right" class="button-with-hover"><a href="../add_idr/index.html"><button>Segnala idrante</button></a></div>
+        <div id="navbar-right" class="button-with-hover"><a href="../add_idr/index.html"><button
+                    class="btn-primary">Segnala idrante</button></a></div>
     </nav>
     <div id="page_content">
         <h1 style="text-align: center">Dettagli idrante</h1>
-        <form id ="insert_code">
+        <form id="insert_code">
             <h3 style="margin-bottom: 22px">Inserire ID idrante:</h3>
             <input id="IDidr_input" type="text" onchange="checkInpID()" placeholder="ID idrante">
-            <input onclick="confButtPressed()" type="button" id = "button_conf" value="Conferma">
+            <input onclick="confButtPressed()" type="button" class="btn btn-primary" id="button_conf" value="Conferma">
         </form>
 
         <hr>
@@ -63,9 +64,9 @@
                 <td class="vals" id="info_c3"></td>
             </tr>
         </table>
+        <div id="editBtn">
+            <button class="btn-secondary">Modifica</button>
+        </div>
     </div>
-
-
 </body>
-
 </html>

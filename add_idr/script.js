@@ -1,13 +1,14 @@
 let jsonData = [];
 
+let userBlueMarker = null;
+
 async function loadMap() {
-    // creazione mappa, set posizione e zoom di default (Piazza Bra)
     let map = L.map('mappa').setView([45.438913, 10.994400], 13);
 
-    // aggiunta layer OpenStreetMap
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap contributors' }).addTo(map);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
 
-    // permessi posizione e coord attuali
     let geoloc = [];
     let geolocPerm = await askGeolocationPermission();
     if (geolocPerm) {
@@ -18,17 +19,55 @@ async function loadMap() {
         }
     }
 
-    // carica json
     await loadJson('../db.json');
-
-    //carica i pin (idranti)
     loadPins(map);
-
-    // flyTo e pallino posizione utente
     if (geolocPerm) {
         loadUserMarker(map);
     }
+
+    // Gestione click sulla mappa
+    map.on('click', function (e) {
+        const lat = e.latlng.lat.toFixed(6);
+        const lon = e.latlng.lng.toFixed(6);
+
+        addOrMoveUserBlueMarker(map, lat, lon);
+
+        document.getElementById("info_id_lat").value = lat;
+        document.getElementById("info_id_lon").value = lon;
+    });
+
+    // Gestione inserimento manuale
+    document.getElementById("info_id_lat").addEventListener("change", updateMarkerFromInputs);
+    document.getElementById("info_id_lon").addEventListener("change", updateMarkerFromInputs);
+
+    function updateMarkerFromInputs() {
+        const lat = parseFloat(document.getElementById("info_id_lat").value);
+        const lon = parseFloat(document.getElementById("info_id_lon").value);
+
+        if (!isNaN(lat) && !isNaN(lon)) {
+            addOrMoveUserBlueMarker(map, lat, lon);
+            map.flyTo([lat, lon], 15);
+        }
+    }
 }
+
+function addOrMoveUserBlueMarker(map, lat, lon) {
+    const bluePin = new L.Icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
+        shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
+
+    if (userBlueMarker) {
+        userBlueMarker.setLatLng([lat, lon]);
+    } else {
+        userBlueMarker = L.marker([lat, lon], { icon: bluePin }).addTo(map);
+    }
+}
+
 
 async function loadJson(path) {
     const response = await fetch(path);
@@ -48,6 +87,15 @@ function loadPins(map) {
 
     const greyPin = new L.Icon({
         iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-grey.png',
+        shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
+
+    const bluePin = new L.Icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
         shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
         iconSize: [25, 41],
         iconAnchor: [12, 41],
