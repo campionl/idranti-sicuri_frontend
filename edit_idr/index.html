@@ -6,19 +6,19 @@
     <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="../body_navbar.css">
     <script src="./script.js"></script>
-    <title>Nuova segnalazione</title>
+    <title>Modifica idrante</title>
 
     <!-- CSS e JS di Leaflet-->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 
-<body onload="loadMap();">
+<body onload="start();">
     <nav id="navbar">
         <div id="navbar-left"><a href="../index.html">Idranti Sicuri VR</a></div>
     </nav>
     <div id="page_content">
-        <h1>Segnalzione di un idrante</h1>
+        <h1>Modifica di un idrante</h1>
         <hr>
         <div id="tables">
             <div id="left-column">
@@ -47,7 +47,6 @@
                             <div style="display: flex; flex-direction: column; align-items: flex-start;">
                                 <label><input type="radio" name="operativo" id="operative" value="si"> Sì</label>
                                 <label><input type="radio" name="operativo" id="n_operative" value="no"> No</label>
-                                <label><input type="radio" name="operativo" id="unk_operative" value="non_lo_so"> Non lo so</label>
                             </div>
                         </td>
                     </tr>
@@ -66,7 +65,7 @@
                 </table>
 
                 <div id="form-buttons"">
-                    <button class=" btn-secondary" onclick="window.location.href='../index.html'">Annulla</button>
+                    <button class="btn-secondary" onclick="window.location.href='../index.html'">Annulla</button>
                     <button id="conferma" class="btn-primary" onclick="insert_data()">Conferma</button>
                 </div>
             </div>

@@ -1,0 +1,74 @@
+body {
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.ins_table {
+    margin: auto;
+    border-radius: 15px;
+    box-shadow: 15px 15px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid gray;
+    border-width: 1px;
+    padding: 20px;
+    margin-top: 30px;
+}
+
+#tables {
+    display: flex;
+    width: 1500px;
+    margin: auto;
+}
+
+#mappa {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+}
+
+#select_on_map {
+    width: 900px;
+    height: 600px;
+    padding: 0px;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.keys,
+.vals {
+    padding: 10px;
+}
+
+.keys {
+    font-weight: bold;
+}
+
+#info_id {
+    margin: 10px;
+    border-radius: 15px;
+    text-indent: 10px;
+}
+
+#form-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+#tables {
+    display: flex;
+    width: 1500px;
+    margin: auto;
+    align-items: flex-start;
+}
+
+#left-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#upload_label{
+    font-weight: normal;
+}

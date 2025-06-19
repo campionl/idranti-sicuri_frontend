@@ -38,7 +38,22 @@
     font-weight: bold;
 }
 
-#editBtn{
+#actionBtn{
     margin-top: 20px;
     text-align: center;
+}
+
+.btn-primary {
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    font-style: none;
+}
+
+.btn-primary:disabled {
+    background-color: #999999;
+    color: #eeeeee;
+    cursor: not-allowed;
+    opacity: 0.6;
+    box-shadow: none;
 }

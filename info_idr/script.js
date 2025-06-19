@@ -11,7 +11,6 @@ async function start() {
         if (checkInpID(lastPar)) {
             getInfoByID(lastPar);
         }
-
     }
     document.getElementById("IDidr_input").addEventListener("keydown", function (event) {
         if (event.key === "Enter") {
@@ -86,6 +85,7 @@ function getInfoByID(targetID) {
             document.getElementById("info_table").style.display = "none";
             //document.getElementById("error").style.display = "inline";
         }
+        document.getElementById("editBtn_a").href = document.getElementById("editBtn_a").href + "?" + targetIdr.id;
     }
 
 }

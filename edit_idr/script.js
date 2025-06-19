@@ -2,7 +2,37 @@ let jsonData = [];
 
 let userBlueMarker = null;
 
-async function loadMap() {
+async function start() {
+    await loadJson('../db.json');
+    const pars = (window.location.href).split('?');
+    let lastPar;
+    if (pars.length > 1) {
+        lastPar = pars[pars.length - 1];
+        fillForm(lastPar);
+    }
+    await loadMap(lastPar);
+
+}
+
+function fillForm(ID_idr) {
+    const idr = jsonData.find(item => item.id === ID_idr);
+    console.log(jsonData);
+    document.getElementById("info_id_lat").value = idr.location_lat;
+    document.getElementById("info_id_lon").value = idr.location_lon;
+    if (idr.operative) {
+        document.getElementById("operative").checked = true;
+        document.getElementById("n_operative").checked = false;
+    } else {
+        document.getElementById("operative").checked = false;
+        document.getElementById("n_operative").checked = true;
+    }
+    document.getElementById("operative").checked;
+    document.getElementById("camp_1").value = idr.campo1;
+    document.getElementById("camp_2").value = idr.campo2;
+    document.getElementById("camp_3").value = idr.campo3;
+}
+
+async function loadMap(ID_idr) {
     let map = L.map('mappa').setView([45.438913, 10.994400], 13);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -19,8 +49,7 @@ async function loadMap() {
         }
     }
 
-    await loadJson('../db.json');
-    loadPins(map);
+    loadPins(map, ID_idr);
     if (geolocPerm) {
         loadUserMarker(map);
     }
@@ -74,7 +103,7 @@ async function loadJson(path) {
     jsonData = await response.json();
 }
 
-function loadPins(map) {
+function loadPins(map, ID_idr) {
     // pin rosso e grigio
     const redPin = new L.Icon({
         iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
@@ -105,9 +134,14 @@ function loadPins(map) {
 
     // crea i pin
     jsonData.forEach((item, i) => {
-        const icon = item.operative ? redPin : greyPin;
-        L.marker([item.location_lat, item.location_lon], { icon }).addTo(map);
+        if (item.id != ID_idr) {
+            const icon = item.operative ? redPin : greyPin;
+            L.marker([item.location_lat, item.location_lon], { icon }).addTo(map);
+        }
     });
+    const idr = jsonData.find(item => item.id === ID_idr);
+    L.marker([idr.location_lat, idr.location_lon], { bluePin }).addTo(map);
+    map.flyTo([idr.location_lat, idr.location_lon], 15);
 }
 
 function loadUserMarker(map) {
@@ -124,7 +158,6 @@ function loadUserMarker(map) {
         map.on('locationfound', function (e) {
             if (!userMarker) {
                 userMarker = L.marker(e.latlng, { icon: userPin }).addTo(map);
-                map.flyTo(e.latlng, 15);
             } else {
                 userMarker.setLatLng(e.latlng);
             }
@@ -216,6 +249,7 @@ function previewImages(event) {
 }
 
 function insert_data() {
+    id = Math.floor(Math.random() * 10000);
     lat = document.getElementById("info_id_lat").value;
     lon = document.getElementById("info_id_lon").value;
     var operative = document.getElementById("operative").checked;
