@@ -10,7 +10,13 @@ async function start() {
         document.getElementById('IDidr_input').value = lastPar;
         if (checkInpID(lastPar)) {
             getInfoByID(lastPar);
+        } else {
+            document.getElementById("info_table").style.display = "none";
+            document.getElementById("actionBtn").style.display = "none";
         }
+    } else {
+        document.getElementById("info_table").style.display = "none";
+        document.getElementById("actionBtn").style.display = "none";
     }
     document.getElementById("IDidr_input").addEventListener("keydown", function (event) {
         if (event.key === "Enter") {
@@ -32,46 +38,24 @@ function getInfoByID(targetID) {
 
         if (targetIdr) {
             document.getElementById("info_table").style.display = "table";
-            //document.getElementById("error").style.display = "none";
             document.getElementById("info_id").innerHTML = targetIdr.id;
             document.getElementById("info_lat").innerHTML = targetIdr.location_lat;
             document.getElementById("info_lon").innerHTML = targetIdr.location_lon;
-            switch (targetIdr.imgs.length) {
-                case 1:
-                    document.getElementById("info_img_error").style.display = "none";
-                    document.getElementById("info_img1_link").style.display = "inline";
-                    document.getElementById("info_img2_link").style.display = "none";
-                    document.getElementById("info_img3_link").style.display = "none";
-                    document.getElementById("info_img1_link").href = "../assets/" + targetIdr.imgs[0];
-                    document.getElementById("info_img1").src = "../assets/" + targetIdr.imgs[0];
-                    break;
-                case 2:
-                    document.getElementById("info_img_error").style.display = "none";
-                    document.getElementById("info_img1_link").style.display = "inline";
-                    document.getElementById("info_img2_link").style.display = "inline";
-                    document.getElementById("info_img3_link").style.display = "none";
-                    document.getElementById("info_img1_link").href = "../assets/" + targetIdr.imgs[0];
-                    document.getElementById("info_img1").src = "../assets/" + targetIdr.imgs[0];
-                    document.getElementById("info_img2_link").href = "../assets/" + targetIdr.imgs[1];
-                    document.getElementById("info_img2").src = "../assets/" + targetIdr.imgs[1];
-                    break;
-                case 3:
-                    document.getElementById("info_img_error").style.display = "none";
-                    document.getElementById("info_img1_link").style.display = "inline";
-                    document.getElementById("info_img2_link").style.display = "inline";
-                    document.getElementById("info_img3_link").style.display = "inline";
-                    document.getElementById("info_img1_link").href = "../assets/" + targetIdr.imgs[0];
-                    document.getElementById("info_img1").src = "../assets/" + targetIdr.imgs[0];
-                    document.getElementById("info_img2_link").href = "../assets/" + targetIdr.imgs[1];
-                    document.getElementById("info_img2").src = "../assets/" + targetIdr.imgs[1];
-                    document.getElementById("info_img3_link").href = "../assets/" + targetIdr.imgs[2];
-                    document.getElementById("info_img3").src = "../assets/" + targetIdr.imgs[2];
-                    break;
-                default:
-                    document.getElementById("info_img_error").style.display = "inline";
-                    document.getElementById("info_img1_link").style.display = "none";
-                    document.getElementById("info_img2_link").style.display = "none";
-                    document.getElementById("info_img3_link").style.display = "none";
+            if (targetIdr.imgs.length == 0) {
+                document.getElementById("info_img_error").style.display = "inline";
+                for (let i = 1; i <= 3; i++) {
+                    document.getElementById("info_img" + i.toString() + "_link").style.display = "none";
+                }
+            } else {
+                document.getElementById("info_img_error").style.display = "none";
+                for (let i = 1; i <= targetIdr.imgs.length; i++) {
+                    document.getElementById("info_img" + i.toString() + "_link").style.display = "inline";
+                    document.getElementById("info_img" + i.toString()).src = "../assets/" + targetIdr.imgs[i - 1];
+                    document.getElementById("info_img" + i.toString() + "_link").href = "../assets/" + targetIdr.imgs[i - 1];
+                }
+                for (let i = targetIdr.imgs.length + 1; i <= 3; i++) {
+                    document.getElementById("info_img" + i.toString() + "_link").style.display = "none";
+                }
             }
             if (targetIdr.operative) {
                 document.getElementById("info_op").innerHTML = "Sì";
@@ -81,11 +65,10 @@ function getInfoByID(targetID) {
             document.getElementById("info_c1").innerHTML = targetIdr.campo1;
             document.getElementById("info_c2").innerHTML = targetIdr.campo2;
             document.getElementById("info_c3").innerHTML = targetIdr.campo3;
+            document.getElementById("editBtn_a").href = document.getElementById("editBtn_a").href + "?" + targetIdr.id;
         } else {
             document.getElementById("info_table").style.display = "none";
-            //document.getElementById("error").style.display = "inline";
         }
-        document.getElementById("editBtn_a").href = document.getElementById("editBtn_a").href + "?" + targetIdr.id;
     }
 
 }
