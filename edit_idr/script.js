@@ -33,11 +33,9 @@ function fillForm(ID_idr) {
 }
 
 async function loadMap(ID_idr) {
-    let map = L.map('mappa').setView([45.438913, 10.994400], 13);
+    let map = L.map('mappa', {minZoom: 1, maxZoom: 20}).setView([45.438913, 10.994400], 13);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap contributors', maxZoom: 20 }).addTo(map);
 
     let geoloc = [];
     let geolocPerm = await askGeolocationPermission();
