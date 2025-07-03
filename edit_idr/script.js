@@ -123,25 +123,20 @@ function loadPins(map, ID_idr) {
         shadowSize: [41, 41]
     });
 
-    const bluePin = new L.Icon({
-        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
-        shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-        popupAnchor: [1, -34],
-        shadowSize: [41, 41]
-    });
-
-    // crea i pin
+    // crea i pin per tutti gli idranti tranne quello in modifica
     jsonData.forEach((item, i) => {
         if (item.id != ID_idr) {
             const icon = item.operative ? redPin : greyPin;
             L.marker([item.location_lat, item.location_lon], { icon }).addTo(map);
         }
     });
+    
+    // Crea il pin blu per l'idrante in modifica usando la funzione unificata
     const idr = jsonData.find(item => item.id === ID_idr);
-    L.marker([idr.location_lat, idr.location_lon], { bluePin }).addTo(map);
-    map.flyTo([idr.location_lat, idr.location_lon], 15);
+    if (idr) {
+        addOrMoveUserBlueMarker(map, idr.location_lat, idr.location_lon);
+        map.flyTo([idr.location_lat, idr.location_lon], 15);
+    }
 }
 
 function loadUserMarker(map) {
@@ -248,6 +243,7 @@ function previewImages(event) {
     });
 }
 
+/*
 function insert_data() {
     id = Math.floor(Math.random() * 10000);
     lat = document.getElementById("info_id_lat").value;
@@ -265,3 +261,4 @@ function insert_data() {
     console.log("Campo 2: " + camp2);
     console.log("Campo 3: " + camp3);
 }
+*/
