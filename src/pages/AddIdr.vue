@@ -66,11 +66,13 @@
         </div>
 
             <table class="ins_table" id="select_on_map">
+                <tbody>
                 <tr>
                     <td>
                         <Map type="add-idr" ref="map" @coords-selected="onCoordsSelected" />
                     </td>
                 </tr>
+                </tbody>
             </table>
         </div>
     </div>

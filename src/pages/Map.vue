@@ -34,7 +34,9 @@ export default {
   },
   mounted() {
     this.initMap();
+    console.log("mappa caricata")
     this.loadPins();
+    console.log("pin caricati")
     this.$nextTick(() => {
       const lastId = this.$store.state.map.lastViewedPin;
       if (lastId) {
@@ -72,13 +74,16 @@ export default {
       if (this.geolocPerm) {
         try {
           this.geoloc = await this.getLocalCoordinates();
+          console.log("Posizione utente:", this.geoloc);
         } catch (e) {
           console.error("Errore nel recuperare la posizione:", e);
         }
       }
       this.loadPins();
       if (this.geolocPerm) {
+        console.log("Caricamento marker utente");
         this.loadUserMarker();
+        console.log("Marker utente caricato");
       }
     },
     async askGeolocationPermission() {
@@ -192,9 +197,10 @@ export default {
       this.map.locate({ watch: true, setView: false });
       this.map.on('locationfound', function (e) {
         if (!userMarker) {
-          userMarker = L.marker(e.latlng, { icon: userPin }).addTo(this.map);
+          userMarker = L.marker(this.geoloc, { icon: userPin }).addTo(this.map);
+          console.log("Pin utente caricato:", this.geoloc);
           if (this.type !== 'add-idr' && !this.justFlewToPin) {
-            this.map.flyTo(e.latlng, 15);
+            this.map.flyTo(this.geoloc, 15);
           }
           this.justFlewToPin = false;
         } else {
