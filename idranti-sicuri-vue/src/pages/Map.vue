@@ -35,8 +35,7 @@ export default {
       geoloc: [],
       previewMarker: null,
       justFlewToPin: false,
-      // Layer che contiene tutti i marker dei pin: lo usiamo per pulire e ri-popolare i marker
-      // senza creare duplicati quando loadPins viene richiamata più volte.
+      // Layer che raggruppa tutti i marker dei pin: lo usiamo per aggiungere e togliere i pin tutti insieme
       markersLayer: null,
       // Marker che rappresenta la posizione dell'utente (creato o aggiornato quando arrivano le coordinate).
       userMarker: null,
