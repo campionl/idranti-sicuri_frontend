@@ -13,8 +13,11 @@
     "lint": "eslint . --fix --cache"
   },
   "dependencies": {
+    "@vue-leaflet/vue-leaflet": "^0.10.1",
+    "leaflet": "^1.9.4",
     "vue": "^3.5.26",
-    "vue-router": "^4.6.4"
+    "vue-router": "^4.6.4",
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
