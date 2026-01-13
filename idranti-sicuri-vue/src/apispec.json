@@ -1,0 +1,1626 @@
+{
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "bearerFormat": "JWT",
+        "scheme": "bearer",
+        "type": "http"
+      }
+    }
+  },
+  "info": {
+    "description": "API documentation for IDRANJIA, including authentication endpoints.",
+    "title": "IDRANJIA API",
+    "version": "v1"
+  },
+  "openapi": "3.0.2",
+  "paths": {
+    "/api/v1/control": {
+      "post": {
+        "description": "Create a new control record in the database.",
+        "operationId": "createControl",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "data": {
+                    "example": "2024-05-01",
+                    "format": "date",
+                    "type": "string"
+                  },
+                  "esito": {
+                    "example": true,
+                    "type": "boolean"
+                  },
+                  "id_idrante": {
+                    "example": 2,
+                    "type": "integer"
+                  },
+                  "tipo": {
+                    "example": "manutenzione",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "location": {
+                      "example": "https://localhost:5000/api/v1/control/1",
+                      "type": "string"
+                    },
+                    "outcome": {
+                      "example": "successfully created new control",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Control created"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "404": {
+            "description": "Hydrant not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "---",
+        "tags": [
+          "API Server (api_server)"
+        ]
+      }
+    },
+    "/api/v1/control/{id_}": {
+      "delete": {
+        "description": "Delete a control record from the database by its integer ID.",
+        "operationId": "deleteControlById",
+        "parameters": [
+          {
+            "description": "The unique identifier of the control to delete.",
+            "in": "path",
+            "name": "id_",
+            "required": true,
+            "schema": {
+              "example": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "outcome": {
+                      "example": "successfully deleted control",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Control deleted"
+          },
+          "400": {
+            "description": "Invalid ID"
+          },
+          "404": {
+            "description": "Control not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "---",
+        "tags": [
+          "API Server (api_server)"
+        ]
+      },
+      "get": {
+        "description": "Retrieve a control record from the database by its integer ID.",
+        "operationId": "getControlById",
+        "parameters": [
+          {
+            "description": "The unique identifier of the control to retrieve.",
+            "in": "path",
+            "name": "id_",
+            "required": true,
+            "schema": {
+              "example": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "example": "2024-05-01",
+                      "format": "date",
+                      "type": "string"
+                    },
+                    "esito": {
+                      "example": true,
+                      "type": "boolean"
+                    },
+                    "id_controllo": {
+                      "example": 1,
+                      "type": "integer"
+                    },
+                    "id_idrante": {
+                      "example": 2,
+                      "type": "integer"
+                    },
+                    "tipo": {
+                      "example": "manutenzione",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Control record found"
+          },
+          "400": {
+            "description": "Invalid ID"
+          },
+          "404": {
+            "description": "Control not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "---",
+        "tags": [
+          "API Server (api_server)"
+        ]
+      },
+      "patch": {
+        "description": "Update an existing control record by its integer ID. Allows partial updates.",
+        "operationId": "updateControlById",
+        "parameters": [
+          {
+            "description": "The unique identifier of the control to update.",
+            "in": "path",
+            "name": "id_",
+            "required": true,
+            "schema": {
+              "example": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "data": {
+                    "example": "2024-05-01",
+                    "format": "date",
+                    "type": "string"
+                  },
+                  "esito": {
+                    "example": true,
+                    "type": "boolean"
+                  },
+                  "id_idrante": {
+                    "example": 2,
+                    "type": "integer"
+                  },
+                  "tipo": {
+                    "example": "manutenzione",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "location": {
+                      "example": "/control/1",
+                      "type": "string"
+                    },
+                    "outcome": {
+                      "example": "successfully updated control",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Control updated"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "404": {
+            "description": "Control or hydrant not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "---",
+        "tags": [
+          "API Server (api_server)"
+        ]
+      }
+    },
+    "/api/v1/health": {
+      "get": {
+        "description": "Returns the status of the API server.",
+        "operationId": "healthCheck",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "example": "ok",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Server is running and healthy."
+          }
+        },
+        "summary": "---",
+        "tags": [
+          "API Server (api_server)"
+        ]
+      }
+    },
+    "/api/v1/hydrant": {
+      "post": {
+        "description": "Create a new hydrant record in the database.",
+        "operationId": "createHydrant",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "accessibilit\u00e0": {
+                    "example": "pubblica",
+                    "type": "string"
+                  },
+                  "area_geo": {
+                    "example": "Centro",
+                    "type": "string"
+                  },
+                  "comune": {
+                    "example": "Milano",
+                    "type": "string"
+                  },
+                  "latitudine": {
+                    "example": 45.4642,
+                    "type": "number"
+                  },
+                  "longitudine": {
+                    "example": 9.19,
+                    "type": "number"
+                  },
+                  "stato": {
+                    "example": "attivo",
+                    "type": "string"
+                  },
+                  "tipo": {
+                    "example": "idrante",
+                    "type": "string"
+                  },
+                  "via": {
+                    "example": "Via Roma",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "location": {
+                      "example": "https://localhost:5000/api/v1/hydrant/1",
+                      "type": "string"
+                    },
+                    "outcome": {
+                      "example": "successfully created new hydrant",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Hydrant created"
+          },
+          "400": {
+            "description": "Invalid input or user not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "---",
+        "tags": [
+          "API Server (api_server)"
+        ]
+      }
+    },
+    "/api/v1/hydrant/{id_}": {
+      "delete": {
+        "description": "Delete a hydrant record from the database by its integer ID.",
+        "operationId": "deleteHydrantById",
+        "parameters": [
+          {
+            "description": "The unique identifier of the hydrant to delete.",
+            "in": "path",
+            "name": "id_",
+            "required": true,
+            "schema": {
+              "example": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "outcome": {
+                      "example": "successfully deleted hydrant",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Hydrant deleted"
+          },
+          "400": {
+            "description": "Invalid ID"
+          },
+          "404": {
+            "description": "Hydrant not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "---",
+        "tags": [
+          "API Server (api_server)"
+        ]
+      },
+      "get": {
+        "description": "Retrieve hydrant data from the database by its integer ID.",
+        "operationId": "getHydrantById",
+        "parameters": [
+          {
+            "description": "The unique identifier of the hydrant to retrieve.",
+            "in": "path",
+            "name": "id_",
+            "required": true,
+            "schema": {
+              "example": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "accessibilit\u00e0": {
+                      "example": "pubblica",
+                      "type": "string"
+                    },
+                    "area_geo": {
+                      "example": "Centro",
+                      "type": "string"
+                    },
+                    "comune": {
+                      "example": "Milano",
+                      "type": "string"
+                    },
+                    "id": {
+                      "example": 1,
+                      "type": "integer"
+                    },
+                    "latitudine": {
+                      "example": 45.4642,
+                      "type": "number"
+                    },
+                    "longitudine": {
+                      "example": 9.19,
+                      "type": "number"
+                    },
+                    "stato": {
+                      "example": "attivo",
+                      "type": "string"
+                    },
+                    "tipo": {
+                      "example": "idrante",
+                      "type": "string"
+                    },
+                    "via": {
+                      "example": "Via Roma",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Hydrant found"
+          },
+          "400": {
+            "description": "Invalid ID"
+          },
+          "404": {
+            "description": "Hydrant not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "---",
+        "tags": [
+          "API Server (api_server)"
+        ]
+      },
+      "patch": {
+        "description": "Update an existing hydrant record by its integer ID. Allows partial updates.",
+        "operationId": "updateHydrantById",
+        "parameters": [
+          {
+            "description": "The unique identifier of the hydrant to update.",
+            "in": "path",
+            "name": "id_",
+            "required": true,
+            "schema": {
+              "example": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "accessibilit\u00e0": {
+                    "example": "pubblica",
+                    "type": "string"
+                  },
+                  "area_geo": {
+                    "example": "Centro",
+                    "type": "string"
+                  },
+                  "comune": {
+                    "example": "Milano",
+                    "type": "string"
+                  },
+                  "latitudine": {
+                    "example": 45.4642,
+                    "type": "number"
+                  },
+                  "longitudine": {
+                    "example": 9.19,
+                    "type": "number"
+                  },
+                  "stato": {
+                    "example": "attivo",
+                    "type": "string"
+                  },
+                  "tipo": {
+                    "example": "idrante",
+                    "type": "string"
+                  },
+                  "via": {
+                    "example": "Via Roma",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "location": {
+                      "example": "/hydrant/1",
+                      "type": "string"
+                    },
+                    "outcome": {
+                      "example": "successfully updated hydrant",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Hydrant updated"
+          },
+          "400": {
+            "description": "Invalid input or user not found"
+          },
+          "404": {
+            "description": "Hydrant not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "---",
+        "tags": [
+          "API Server (api_server)"
+        ]
+      }
+    },
+    "/api/v1/operator": {
+      "post": {
+        "description": "Create a new operator record in the database.",
+        "operationId": "createOperator",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "CF": {
+                    "example": "RSSMRA80A01F205X",
+                    "type": "string"
+                  },
+                  "cognome": {
+                    "example": "Rossi",
+                    "type": "string"
+                  },
+                  "nome": {
+                    "example": "Mario",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "location": {
+                      "example": "https://localhost:5000/api/v1/operator/RSSMRA80A01F205X",
+                      "type": "string"
+                    },
+                    "outcome": {
+                      "example": "operator successfully created",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Operator created"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "---",
+        "tags": [
+          "API Server (api_server)"
+        ]
+      }
+    },
+    "/api/v1/operator/{CF}": {
+      "delete": {
+        "description": "Delete an operator record from the database by CF.",
+        "operationId": "deleteOperatorByCF",
+        "parameters": [
+          {
+            "description": "The unique identifier (CF) of the operator to delete.",
+            "in": "path",
+            "name": "CF",
+            "required": true,
+            "schema": {
+              "example": "RSSMRA80A01F205X",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "outcome": {
+                      "example": "successfully deleted operator",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Operator deleted"
+          },
+          "400": {
+            "description": "Invalid CF"
+          },
+          "404": {
+            "description": "Operator not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "---",
+        "tags": [
+          "API Server (api_server)"
+        ]
+      },
+      "get": {
+        "description": "Retrieve operator information from the database by CF (16-character alphanumeric string).",
+        "operationId": "getOperatorByCF",
+        "parameters": [
+          {
+            "description": "The unique identifier (CF) of the operator to retrieve.",
+            "in": "path",
+            "name": "CF",
+            "required": true,
+            "schema": {
+              "example": "RSSMRA80A01F205X",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "CF": {
+                      "example": "RSSMRA80A01F205X",
+                      "type": "string"
+                    },
+                    "cognome": {
+                      "example": "Rossi",
+                      "type": "string"
+                    },
+                    "nome": {
+                      "example": "Mario",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Operator found"
+          },
+          "400": {
+            "description": "Invalid CF"
+          },
+          "404": {
+            "description": "Operator not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "---",
+        "tags": [
+          "API Server (api_server)"
+        ]
+      },
+      "patch": {
+        "description": "Update an existing operator record by CF. Allows partial updates.",
+        "operationId": "updateOperatorByCF",
+        "parameters": [
+          {
+            "description": "The unique identifier (CF) of the operator to update.",
+            "in": "path",
+            "name": "CF",
+            "required": true,
+            "schema": {
+              "example": "RSSMRA80A01F205X",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "CF": {
+                    "example": "RSSMRA80A01F205X",
+                    "type": "string"
+                  },
+                  "cognome": {
+                    "example": "Rossi",
+                    "type": "string"
+                  },
+                  "nome": {
+                    "example": "Mario",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "location": {
+                      "example": "/operator/RSSMRA80A01F205X",
+                      "type": "string"
+                    },
+                    "outcome": {
+                      "example": "successfully updated operator",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Operator updated"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "404": {
+            "description": "Operator not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "---",
+        "tags": [
+          "API Server (api_server)"
+        ]
+      }
+    },
+    "/api/v1/photo": {
+      "post": {
+        "description": "Create a new photo record associated with a hydrant.",
+        "operationId": "createPhoto",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "data": {
+                    "example": "2024-05-01",
+                    "format": "date",
+                    "type": "string"
+                  },
+                  "id_idrante": {
+                    "example": 1,
+                    "type": "integer"
+                  },
+                  "posizione": {
+                    "example": "frontale",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "location": {
+                      "example": "https://localhost:5000/api/v1/photo/1",
+                      "type": "string"
+                    },
+                    "outcome": {
+                      "example": "photo successfully created",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Photo created"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "404": {
+            "description": "Hydrant not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "---",
+        "tags": [
+          "API Server (api_server)"
+        ]
+      }
+    },
+    "/api/v1/photo/{id_}": {
+      "delete": {
+        "description": "Delete a photo record from the database by its integer ID.",
+        "operationId": "deletePhotoById",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id_",
+            "required": true,
+            "schema": {
+              "example": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "outcome": {
+                      "example": "photo successfully deleted",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Photo deleted"
+          },
+          "400": {
+            "description": "Invalid ID"
+          },
+          "404": {
+            "description": "Photo not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "---",
+        "tags": [
+          "API Server (api_server)"
+        ]
+      },
+      "get": {
+        "description": "Retrieve all photos associated with a hydrant by its integer ID.",
+        "operationId": "getPhotosByHydrantId",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "hydrant_id",
+            "required": true,
+            "schema": {
+              "example": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "properties": {
+                      "data": {
+                        "example": "2024-05-01",
+                        "format": "date",
+                        "type": "string"
+                      },
+                      "posizione": {
+                        "example": "frontale",
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Photos found"
+          },
+          "400": {
+            "description": "Invalid hydrant ID"
+          },
+          "404": {
+            "description": "Hydrant or photos not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "---",
+        "tags": [
+          "API Server (api_server)"
+        ]
+      },
+      "patch": {
+        "description": "Update an existing photo record by its integer ID. Allows partial updates.",
+        "operationId": "updatePhotoById",
+        "parameters": [
+          {
+            "description": "The unique identifier of the photo to update.",
+            "in": "path",
+            "name": "id_",
+            "required": true,
+            "schema": {
+              "example": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "data": "2024-05-01",
+                "id_idrante": 1,
+                "posizione": "frontale"
+              },
+              "schema": {
+                "properties": {
+                  "data": {
+                    "example": "2024-05-01",
+                    "format": "date",
+                    "type": "string"
+                  },
+                  "id_idrante": {
+                    "example": 1,
+                    "type": "integer"
+                  },
+                  "posizione": {
+                    "example": "frontale",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "outcome": "photo successfully updated"
+                },
+                "schema": {
+                  "properties": {
+                    "location": {
+                      "example": "/photo/1",
+                      "type": "string"
+                    },
+                    "outcome": {
+                      "example": "photo successfully updated",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Photo updated"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "404": {
+            "description": "Photo not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "---",
+        "tags": [
+          "API Server (api_server)"
+        ]
+      }
+    },
+    "/api/v1/user": {
+      "post": {
+        "description": "Create a new user in the database.",
+        "operationId": "createUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "admin": {
+                    "example": false,
+                    "type": "boolean"
+                  },
+                  "cognome": {
+                    "example": "Rossi",
+                    "type": "string"
+                  },
+                  "comune": {
+                    "example": "Milano",
+                    "type": "string"
+                  },
+                  "email": {
+                    "example": "user@example.com",
+                    "type": "string"
+                  },
+                  "nome": {
+                    "example": "Mario",
+                    "type": "string"
+                  },
+                  "password": {
+                    "example": "mypassword",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "location": {
+                      "example": "https://localhost:5000/api/v1/user/user@example.com",
+                      "type": "string"
+                    },
+                    "outcome": {
+                      "example": "User user@example.com created",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "User created"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "409": {
+            "description": "User already exists"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "---",
+        "tags": [
+          "API Server (api_server)"
+        ]
+      }
+    },
+    "/api/v1/user/auth/login": {
+      "post": {
+        "description": "Authenticate a user and return a JWT token.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "email": {
+                    "example": "user@example.com",
+                    "type": "string"
+                  },
+                  "password": {
+                    "example": "mypassword",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "access_token": {
+                      "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
+                      "type": "string"
+                    },
+                    "refresh_token": {
+                      "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Login successful"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Invalid credentials"
+          },
+          "403": {
+            "description": "Login not available through API server"
+          },
+          "500": {
+            "description": "Authentication service unavailable or internal error"
+          }
+        },
+        "summary": "---",
+        "tags": [
+          "API Server (api_server)"
+        ]
+      }
+    },
+    "/api/v1/user/{email}": {
+      "delete": {
+        "description": "Delete a user from the database by email.",
+        "operationId": "deleteUserByEmail",
+        "parameters": [
+          {
+            "description": "The unique email address of the user to delete.",
+            "in": "path",
+            "name": "email",
+            "required": true,
+            "schema": {
+              "example": "user@example.com",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "example": "User user@example.com deleted",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "User deleted"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "---",
+        "tags": [
+          "API Server (api_server)"
+        ]
+      },
+      "get": {
+        "description": "Retrieve user information from the database by email.",
+        "operationId": "getUserByEmail",
+        "parameters": [
+          {
+            "description": "The unique email address of the user to retrieve.",
+            "in": "path",
+            "name": "email",
+            "required": true,
+            "schema": {
+              "example": "user@example.com",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "admin": {
+                      "example": false,
+                      "type": "boolean"
+                    },
+                    "cognome": {
+                      "example": "Rossi",
+                      "type": "string"
+                    },
+                    "comune": {
+                      "example": "Milano",
+                      "type": "string"
+                    },
+                    "email": {
+                      "example": "user@example.com",
+                      "type": "string"
+                    },
+                    "nome": {
+                      "example": "Mario",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "User found"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "---",
+        "tags": [
+          "API Server (api_server)"
+        ]
+      },
+      "patch": {
+        "description": "Update user information in the database by email. Allows partial updates.",
+        "operationId": "updateUserByEmail",
+        "parameters": [
+          {
+            "description": "The unique email address of the user to update.",
+            "in": "path",
+            "name": "email",
+            "required": true,
+            "schema": {
+              "example": "user@example.com",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "admin": {
+                    "example": false,
+                    "type": "boolean"
+                  },
+                  "cognome": {
+                    "example": "Rossi",
+                    "type": "string"
+                  },
+                  "comune": {
+                    "example": "Milano",
+                    "type": "string"
+                  },
+                  "nome": {
+                    "example": "Mario",
+                    "type": "string"
+                  },
+                  "password": {
+                    "example": "newpassword",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "example": "User user@example.com updated",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "User updated"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "---",
+        "tags": [
+          "API Server (api_server)"
+        ]
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "email": {
+                    "example": "user@example.com",
+                    "type": "string"
+                  },
+                  "password": {
+                    "example": "mypassword",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "access_token": {
+                      "type": "string"
+                    },
+                    "refresh_token": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful login, returns JWT tokens"
+          },
+          "400": {
+            "description": "Bad request (missing or invalid data)"
+          },
+          "401": {
+            "description": "Invalid credentials"
+          }
+        },
+        "summary": "Login endpoint to authenticate users and generate JWT tokens.",
+        "tags": [
+          "Authentication (auth_server)"
+        ]
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "access_token": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "New access token issued"
+          },
+          "401": {
+            "description": "Invalid or expired refresh token"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Refresh endpoint to issue a new access token using a refresh token.",
+        "tags": [
+          "Authentication (auth_server)"
+        ]
+      }
+    },
+    "/auth/validate": {
+      "post": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "identity": {
+                      "type": "string"
+                    },
+                    "role": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Token is valid"
+          },
+          "401": {
+            "description": "Invalid or expired token"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Validate endpoint to check the validity of a JWT token.",
+        "tags": [
+          "Authentication (auth_server)"
+        ]
+      }
+    },
+    "/health": {
+      "get": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "example": "ok",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Server is healthy"
+          }
+        },
+        "summary": "Health check endpoint to verify the auth server is running.",
+        "tags": [
+          "Authentication (auth_server)"
+        ]
+      }
+    }
+  }
+}
