@@ -146,7 +146,7 @@ export default {
     font-weight: bold;
 }
 
-/* Responsive styles for mobile */
+/* Stili responsivi per mobile */
 @media (max-width: 900px) {
   #page_content {
     margin: 0;

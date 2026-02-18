@@ -1,13 +1,15 @@
 <template>
     <div>
       <TheHeader title="Elimina idrante " />
-      <p>Elimina l'idrante {{ id }}</p>
-      <base-button class="btn-primary" @click="goDetails">Torna ai dettagli</base-button>
+      <p>Eliminare l'idrante {{ id }}?</p>
+      <base-button class="btn-primary" @click="deleteIdr">Elimina</base-button>
+      <base-button class="btn-secondary" @click="goBack">Annulla</base-button>
     </div>
   </template>
   
   <script>
   // Pagina 'Elimina idrante': conferma ed esegue la cancellazione dell'idrante.
+  // Status: TODO - implementare logica reale di cancellazione
 export default {
     name: 'DeleteIdr',
     props: {
@@ -17,9 +19,14 @@ export default {
         }
     },
     methods: {
-        goDetails() {
+        goBack() {
             // Torna alla pagina dettagli se l'utente annulla
             this.$router.push(`/details/${this.id}`);
+        },
+        deleteIdr() {
+            // Logica per eliminare l'idrante (da implementare)
+            // Dopo l'eliminazione, torna alla mappa degli idranti
+            this.$router.push('/');
         }
     }
   }
@@ -58,7 +65,7 @@ export default {
       margin-bottom: 2.5rem;
     }
     .btn-primary {
-      width: 90vw;
+      width: 900vw;
       max-width: 300px;
       font-size: 1.1rem;
       margin: 1.2rem auto 7rem auto;

@@ -16,7 +16,7 @@
 <script></script>
 
 <style scoped>
-/* navbar */
+/* Barra di navigazione */
 #navbar {
     height: 5vh;
     background-color: #bb0000;
@@ -76,7 +76,7 @@
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
   }
-  /* Manteniamo il logo e il titolo sulla stessa riga in mobile: usiamo inline-flex per allinearli
+  /* Mantieni il logo e il titolo sulla stessa riga in mobile: usa inline-flex per allinearli
      e rimuoviamo la larghezza piena che li separava su due righe. */
   #navbar-left a, #navbar-left h1 {
     display: inline-flex;

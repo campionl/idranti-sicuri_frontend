@@ -114,19 +114,18 @@ export default {
       // ricaricheremo i pin per aggiornare i popup con i link "Apri in Maps" contenenti le coordinate.
       this.loadPins();
       console.log('initMap: caricamento pin immediato');
-      setTimeout(() => {
-        console.log('initMap: invalidateSize eseguito');
-        this.map.invalidateSize();
-      }, 300);
+
+      //invalidatesize??
+
+      console.log('initMap: chiedo permesso geoloc');
       this.geolocPerm = await this.askGeolocationPermission();
       console.log('initMap: permesso geoloc', this.geolocPerm);
       if (this.geolocPerm) {
         try {
+          console.log('initMap: attendo coordinate geoloc');
           this.geoloc = await this.getLocalCoordinates();
           console.log('initMap: coordinate geoloc', this.geoloc);
           // ricarichiamo i pin dopo aver ottenuto le coordinate per aggiornare i popup con link "Apri in Maps"
-          console.log('initMap: ricarico pin dopo geoloc');
-          this.loadPins();
         } catch (e) {
           console.error("Errore nel recuperare la posizione:", e);
         }
@@ -136,6 +135,12 @@ export default {
         // se non abbiamo permesso geoloc non servono ulteriori azioni per il marker utente
         console.log('initMap: marker utente non caricato (permesso negato)');
       }
+      setTimeout(() => {
+        if (this.map) {
+          this.map.invalidateSize();
+          console.log('Mappa: invalidateSize forzato');
+        }
+      }, 500);
     },
     // Richiede il permesso di geolocalizzazione al browser.
     // - Usa `navigator.geolocation.getCurrentPosition` per capire se l'utente ha dato il consenso
@@ -171,22 +176,40 @@ export default {
     // - Rigetta con l'errore del browser in caso di timeout o rifiuto
     async getLocalCoordinates() {
       return new Promise((resolve, reject) => {
+        console.log('getLocalCoordinates: navigator.geolocation disponibile?', "geolocation" in navigator);
+        // Proviamo a leggere lo stato dei permessi (se supportato) per avere più contesto nei log
+        try {
+          if (navigator.permissions && navigator.permissions.query) {
+            navigator.permissions.query({ name: 'geolocation' }).then(p => {
+              console.log('getLocalCoordinates: stato permessi =', p.state);
+            }).catch(perr => {
+              console.log('getLocalCoordinates: errore permissions.query', perr);
+            });
+          }
+        } catch (e) {
+          console.log('getLocalCoordinates: API Permissions non disponibile o fallita', e);
+        }
+
         //    Verifichiamo la presenza dell'API geolocation
         if ("geolocation" in navigator) {
+          console.log('getLocalCoordinates: chiamo getCurrentPosition');
           //  Richiediamo la posizione corrente (callback success/error)
           navigator.geolocation.getCurrentPosition(
             (position) => {
+              console.log('getLocalCoordinates: posizione ottenuta', position);
               //    Costruiamo un array compatto [lat, lon] e lo risolviamo
               const coord = [
                 position.coords.latitude,
                 position.coords.longitude
               ];
+              console.log('getLocalCoordinates: oggetto posizione:', position);
               console.log('getLocalCoordinates: coordinate ottenute', coord);
               resolve(coord);
             },
             (error) => {
               //    In caso di errore (timeout, rifiuto, ecc.) logghiamo e rigettiamo
-              console.error("Errore posizione:", error);
+              console.warn('getLocalCoordinates: errore getCurrentPosition codice/messaggio', error && error.code, error && error.message);
+              console.error('getLocalCoordinates: oggetto errore completo', error);
               console.log('getLocalCoordinates: errore', error);
               reject(error);
             }
@@ -290,90 +313,90 @@ export default {
         });
       });
       console.log('loadPins: completato');
-  },
-  // Gestisce la creazione/aggiornamento del marker che rappresenta l'utente.
-  // Comportamento:
-  // - Se `this.geoloc` è già disponibile, crea subito il marker per evitare ritardi
-  // - Registra un handler nominato `_onLocationFound` per aggiornare il marker quando arrivano eventi
-  // - Avvia `this.map.locate({ watch: true })` per ottenere aggiornamenti in tempo reale
-  loadUserMarker() {
-    console.log('loadUserMarker: avvio');
-    //    Definizione dell'icona usata per il marker utente
-    const userPin = new L.Icon({
-      iconUrl: '../assets/userMarker.png',
-      iconSize: [20, 20],
-      iconAnchor: [10, 10],
-    });
-    try {
-      //    Se disponiamo già di coordinate (snapshot) creiamo subito il marker per migliorare UX
-      if (this.geoloc && this.geoloc.length === 2) {
-        this.userMarker = L.marker(this.geoloc, { icon: userPin }).addTo(this.map);
-        console.log('loadUserMarker: marker creato da geoloc', this.geoloc);
-        //    Centriamo la mappa sulla posizione utente solo se non siamo appena volati su un pin
-        if (this.type !== 'add-idr' && !this.justFlewToPin) {
-          this.map.flyTo(this.geoloc, 15);
-        }
-        this.justFlewToPin = false;
-      }
-      //    Registriamo un handler nominato per aggiornamenti in tempo reale (locationfound)
-      if (!this._onLocationFound) {
-        this._onLocationFound = (e) => {
-          console.log('loadUserMarker: posizione trovata', e.latlng);
-          //     Se non abbiamo ancora un marker creiamolo, altrimenti aggiorniamo la posizione
-          if (!this.userMarker) {
-            this.userMarker = L.marker(e.latlng, { icon: userPin }).addTo(this.map);
-            console.log('loadUserMarker: marker creato da evento', e.latlng);
-            if (this.type !== 'add-idr' && !this.justFlewToPin) {
-              this.map.flyTo(e.latlng, 15);
-            }
-            this.justFlewToPin = false;
-          } else {
-            this.userMarker.setLatLng(e.latlng);
-            console.log('loadUserMarker: marker aggiornato', e.latlng);
+    },
+    // Gestisce la creazione/aggiornamento del marker che rappresenta l'utente.
+    // Comportamento:
+    // - Se `this.geoloc` è già disponibile, crea subito il marker per evitare ritardi
+    // - Registra un handler nominato `_onLocationFound` per aggiornare il marker quando arrivano eventi
+    // - Avvia `this.map.locate({ watch: true })` per ottenere aggiornamenti in tempo reale
+    loadUserMarker() {
+      console.log('loadUserMarker: avvio');
+      //    Definizione dell'icona usata per il marker utente
+      const userPin = new L.Icon({
+        iconUrl: '../assets/userMarker.png',
+        iconSize: [20, 20],
+        iconAnchor: [10, 10],
+      });
+      try {
+        //    Se disponiamo già di coordinate (snapshot) creiamo subito il marker per migliorare UX
+        if (this.geoloc && this.geoloc.length === 2) {
+          this.userMarker = L.marker(this.geoloc, { icon: userPin }).addTo(this.map);
+          console.log('loadUserMarker: marker creato da geoloc', this.geoloc);
+          //    Centriamo la mappa sulla posizione utente solo se non siamo appena volati su un pin
+          if (this.type !== 'add-idr' && !this.justFlewToPin) {
+            this.map.flyTo(this.geoloc, 15);
           }
-        };
-        //    Attacchiamo il listener e avviamo il watch della posizione
-        this.map.on('locationfound', this._onLocationFound);
-        this.map.locate({ watch: true, setView: false });
+          this.justFlewToPin = false;
+        }
+        //    Registriamo un handler nominato per aggiornamenti in tempo reale (locationfound)
+        if (!this._onLocationFound) {
+          this._onLocationFound = (e) => {
+            console.log('loadUserMarker: posizione trovata', e.latlng);
+            //     Se non abbiamo ancora un marker creiamolo, altrimenti aggiorniamo la posizione
+            if (!this.userMarker) {
+              this.userMarker = L.marker(e.latlng, { icon: userPin }).addTo(this.map);
+              console.log('loadUserMarker: marker creato da evento', e.latlng);
+              if (this.type !== 'add-idr' && !this.justFlewToPin) {
+                this.map.flyTo(e.latlng, 15);
+              }
+              this.justFlewToPin = false;
+            } else {
+              this.userMarker.setLatLng(e.latlng);
+              console.log('loadUserMarker: marker aggiornato', e.latlng);
+            }
+          };
+          //    Attacchiamo il listener e avviamo il watch della posizione
+          this.map.on('locationfound', this._onLocationFound);
+          this.map.locate({ watch: true, setView: false });
+        }
+      } catch (e) {
+        //   Gestione degli errori: log per il debug
+        console.error("Errore nel recuperare la posizione:", e);
       }
-    } catch (e) {
-      //   Gestione degli errori: log per il debug
-      console.error("Errore nel recuperare la posizione:", e);
-    }
-  },
-  // Posiziona o aggiorna il marker di anteprima usato nella pagina 'AddIdr' quando l'utente
-  // inserisce manualmente coordinate o clicca sulla mappa. Il marker è solo di preview (opacità ridotta)
-  // e non influisce sui pin salvati nello store.
-  // NOTE: accetta anche stringhe con virgola; il metodo effettua una normalizzazione di base
-  setPreviewMarker(coords) {
-    //  Normalizziamo e convertiamo in float (accetta anche stringhe con virgola)
-    const lat = parseFloat(String(coords[0]).replace(',', '.'));
-    const lon = parseFloat(String(coords[1]).replace(',', '.'));
-    console.log('setPreviewMarker: posiziono anteprima', [lat, lon]);
-    //    Validazione minima: usciamo se la mappa non è pronta o le coord non sono numeriche
-    if (!this.map || isNaN(lat) || isNaN(lon)) return;
-    //  Se esiste già un preview marker lo spostiamo, altrimenti lo creiamo
-    if (this.previewMarker) {
-      this.previewMarker.setLatLng([lat, lon]);
-    } else {
-      this.previewMarker = L.marker([lat, lon], { opacity: 0.7 }).addTo(this.map);
-    }
-    //  Centriamo la mappa sulla posizione di preview con uno zoom ravvicinato
-    this.map.flyTo([lat, lon], 19);
-  },
+    },
+    // Posiziona o aggiorna il marker di anteprima usato nella pagina 'AddIdr' quando l'utente
+    // inserisce manualmente coordinate o clicca sulla mappa. Il marker è solo di preview (opacità ridotta)
+    // e non influisce sui pin salvati nello store.
+    // NOTE: accetta anche stringhe con virgola; il metodo effettua una normalizzazione di base
+    setPreviewMarker(coords) {
+      //  Normalizziamo e convertiamo in float (accetta anche stringhe con virgola)
+      const lat = parseFloat(String(coords[0]).replace(',', '.'));
+      const lon = parseFloat(String(coords[1]).replace(',', '.'));
+      console.log('setPreviewMarker: posiziono anteprima', [lat, lon]);
+      //    Validazione minima: usciamo se la mappa non è pronta o le coord non sono numeriche
+      if (!this.map || isNaN(lat) || isNaN(lon)) return;
+      //  Se esiste già un preview marker lo spostiamo, altrimenti lo creiamo
+      if (this.previewMarker) {
+        this.previewMarker.setLatLng([lat, lon]);
+      } else {
+        this.previewMarker = L.marker([lat, lon], { opacity: 0.7 }).addTo(this.map);
+      }
+      //  Centriamo la mappa sulla posizione di preview con uno zoom ravvicinato
+      this.map.flyTo([lat, lon], 19);
+    },
 
-  // Rimuove il marker di anteprima se presente. Separato dalla logica dei marker utente/pin.
-  // Usato da `AddIdr` per pulire la preview quando l'utente annulla o salva.
-  removePreviewMarker() {
-    console.log('removePreviewMarker: rimosso');
-    if (this.previewMarker) {
-      //  Rimuoviamo fisicamente il layer dalla mappa
-      this.map.removeLayer(this.previewMarker);
-      //  Puliamo il riferimento per permettere la ricreazione successiva
-      this.previewMarker = null;
+    // Rimuove il marker di anteprima se presente. Separato dalla logica dei marker utente/pin.
+    // Usato da `AddIdr` per pulire la preview quando l'utente annulla o salva.
+    removePreviewMarker() {
+      console.log('removePreviewMarker: rimosso');
+      if (this.previewMarker) {
+        //  Rimuoviamo fisicamente il layer dalla mappa
+        this.map.removeLayer(this.previewMarker);
+        //  Puliamo il riferimento per permettere la ricreazione successiva
+        this.previewMarker = null;
+      }
     }
   }
-}
 }
 </script>
 
