@@ -311,7 +311,7 @@ export default {
 
             // 3) Previeni duplicati lato client: controlla se esiste già un pin alle stesse coordinate
             const exists = this.$store.state.map.pins.some(p => p.location_lat === lat && p.location_lon === lon);
-            if (exists) {
+            if (exists && this.type != 'edit') {
                 alert('Esiste già un idrante con queste coordinate.');
                 // Centra la vista sul pin esistente
                 this.$refs.map.flyTo([lat, lon]);
