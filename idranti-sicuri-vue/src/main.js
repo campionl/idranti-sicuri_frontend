@@ -11,9 +11,11 @@ import BaseDialog from './components/bases/BaseDialog.vue'
 import TheHeader from './components/layouts/TheHeader.vue'
 import BaseInput from './components/bases/BaseInput.vue'
 import BaseCard from './components/bases/BaseCard.vue'
+import formIdr from './components/formIdr.vue'
 import router from './router'
 const app = createApp(App)
 app.use(store)
+app.component('formIdr', formIdr)
 app.component('TheNavBar', TheNavBar)
 app.component('Map', Map)
 app.component('BaseButton', BaseButton)

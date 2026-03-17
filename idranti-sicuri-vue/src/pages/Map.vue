@@ -50,22 +50,6 @@ export default {
     // Avviamo la mappa
     // (il caricamento dei pin avviene subito dentro `initMap` dopo aver creato il `markersLayer`).
     this.initMap();
-    this.$nextTick(() => {
-      const lastId = this.$store.state.map.lastViewedPin;
-      if (lastId) {
-        const pin = this.$store.state.map.pins.find(p => p.id === lastId);
-        if (pin) {
-          this.flyTo([pin.location_lat, pin.location_lon]);
-          this.justFlewToPin = true;
-        }
-        this.$store.commit('map/setLastViewedPin', null);
-      }
-      if (this.type === 'add-idr') {
-        this.map.on('click', (e) => {
-          this.$emit('coords-selected', [e.latlng.lat, e.latlng.lng]);
-        });
-      }
-    });
   },
   beforeUnmount() {
     console.log('Mappa: beforeUnmount - rimuovo mappa');
@@ -97,50 +81,44 @@ export default {
     // - Chiama `this.loadPins()` per popolare i marker immediatamente (migliora UX durante l'attesa dei permessi)
     // - Richiede il permesso di geolocalizzazione e, se consentito, ottiene una posizione iniziale e carica il marker utente
     async initMap() {
-      console.log('initMap: avvio');
       this.map = L.map('mappa', { minZoom: 1, maxZoom: 20 }).setView([45.438913, 10.994400], 13);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors',
         maxZoom: 20
       }).addTo(this.map);
-      console.log('initMap: tile layer aggiunto');
-      // Creiamo un LayerGroup per gestire i marker in modo invariabile. Questo ci permette di
-      // chiamare `loadPins()` più volte senza che i marker vengano duplicati: basta chiamare
-      // `markersLayer.clearLayers()` prima di ri-popolarlo.
+
       this.markersLayer = L.layerGroup().addTo(this.map);
-      console.log('initMap: markers layer creato');
-      // Carichiamo subito i pin per evitare che la mappa rimanga vuota durante l'attesa del
-      // permesso di geolocalizzazione (migliora l'UX). Se in seguito otteniamo la posizione,
-      // ricaricheremo i pin per aggiornare i popup con i link "Apri in Maps" contenenti le coordinate.
       this.loadPins();
-      console.log('initMap: caricamento pin immediato');
 
-      //invalidatesize??
+      const lastId = this.$store.state.map.lastViewedPin;
+      if (lastId) {
+        const pin = this.$store.state.map.pins.find(p => p.id === lastId);
+        if (pin) {
+          this.flyTo([pin.location_lat, pin.location_lon]);
+          this.justFlewToPin = true;
+        }
+        this.$store.commit('map/setLastViewedPin', null);
+      }
+      if (this.type === 'add-idr') {
+        this.map.on('click', (e) => {
+          this.$emit('coords-selected', [e.latlng.lat, e.latlng.lng]);
+        });
+      }
 
-      console.log('initMap: chiedo permesso geoloc');
+      setTimeout(() => {
+        if (this.map) this.map.invalidateSize();
+      }, 500);
+
       this.geolocPerm = await this.askGeolocationPermission();
-      console.log('initMap: permesso geoloc', this.geolocPerm);
       if (this.geolocPerm) {
         try {
-          console.log('initMap: attendo coordinate geoloc');
           this.geoloc = await this.getLocalCoordinates();
-          console.log('initMap: coordinate geoloc', this.geoloc);
-          // ricarichiamo i pin dopo aver ottenuto le coordinate per aggiornare i popup con link "Apri in Maps"
+          this.loadUserMarker();
+          this.loadPins();
         } catch (e) {
           console.error("Errore nel recuperare la posizione:", e);
         }
-        console.log('initMap: carico marker utente');
-        this.loadUserMarker();
-      } else {
-        // se non abbiamo permesso geoloc non servono ulteriori azioni per il marker utente
-        console.log('initMap: marker utente non caricato (permesso negato)');
       }
-      setTimeout(() => {
-        if (this.map) {
-          this.map.invalidateSize();
-          console.log('Mappa: invalidateSize forzato');
-        }
-      }, 500);
     },
     // Richiede il permesso di geolocalizzazione al browser.
     // - Usa `navigator.geolocation.getCurrentPosition` per capire se l'utente ha dato il consenso
@@ -171,59 +149,30 @@ export default {
         }
       });
     },
-    // Ottiene una singola posizione corrente tramite l'API Geolocation.
-    // - Risolve con un array [lat, lon] se la richiesta va a buon fine
-    // - Rigetta con l'errore del browser in caso di timeout o rifiuto
+    
     async getLocalCoordinates() {
       return new Promise((resolve, reject) => {
-        console.log('getLocalCoordinates: navigator.geolocation disponibile?', "geolocation" in navigator);
-        // Proviamo a leggere lo stato dei permessi (se supportato) per avere più contesto nei log
-        try {
-          if (navigator.permissions && navigator.permissions.query) {
-            navigator.permissions.query({ name: 'geolocation' }).then(p => {
-              console.log('getLocalCoordinates: stato permessi =', p.state);
-            }).catch(perr => {
-              console.log('getLocalCoordinates: errore permissions.query', perr);
-            });
-          }
-        } catch (e) {
-          console.log('getLocalCoordinates: API Permissions non disponibile o fallita', e);
+        if (!("geolocation" in navigator)) {
+          reject(new Error("Localizzazione non supportata"));
+          return;
         }
 
-        //    Verifichiamo la presenza dell'API geolocation
-        if ("geolocation" in navigator) {
-          console.log('getLocalCoordinates: chiamo getCurrentPosition');
-          //  Richiediamo la posizione corrente (callback success/error)
-          navigator.geolocation.getCurrentPosition(
-            (position) => {
-              console.log('getLocalCoordinates: posizione ottenuta', position);
-              //    Costruiamo un array compatto [lat, lon] e lo risolviamo
-              const coord = [
-                position.coords.latitude,
-                position.coords.longitude
-              ];
-              console.log('getLocalCoordinates: oggetto posizione:', position);
-              console.log('getLocalCoordinates: coordinate ottenute', coord);
-              resolve(coord);
-            },
-            (error) => {
-              //    In caso di errore (timeout, rifiuto, ecc.) logghiamo e rigettiamo
-              console.warn('getLocalCoordinates: errore getCurrentPosition codice/messaggio', error && error.code, error && error.message);
-              console.error('getLocalCoordinates: oggetto errore completo', error);
-              console.log('getLocalCoordinates: errore', error);
-              reject(error);
-            }
-          );
-        } else {
-          //    API non disponibile: rigettiamo con un errore esplicito
-          const errorMsg = "Localizzazione non supportata";
-          console.error(errorMsg);
-          console.log('getLocalCoordinates: geolocalizzazione non supportata');
-          reject(new Error(errorMsg));
-        }
+        const watchId = navigator.geolocation.watchPosition(
+          (position) => {
+            navigator.geolocation.clearWatch(watchId);
+            resolve([position.coords.latitude, position.coords.longitude]);
+          },
+          (error) => {
+            navigator.geolocation.clearWatch(watchId);
+            reject(error);
+          },
+          {
+            enableHighAccuracy: true,
+            maximumAge: 60000
+          }
+        );
       });
     },
-
     // Centra la vista della mappa sulle coordinate fornite (lat, lon).
     // - `coords` è [lat, lon]
     // - Usa zoom fisso 15 per mostrare il contesto
@@ -321,6 +270,10 @@ export default {
     // - Avvia `this.map.locate({ watch: true })` per ottenere aggiornamenti in tempo reale
     loadUserMarker() {
       console.log('loadUserMarker: avvio');
+      if (!this.map) {
+        console.warn('loadUserMarker: mappa non disponibile, skip');
+        return;
+      }
       //    Definizione dell'icona usata per il marker utente
       const userPin = new L.Icon({
         iconUrl: '../assets/userMarker.png',
@@ -341,6 +294,7 @@ export default {
         //    Registriamo un handler nominato per aggiornamenti in tempo reale (locationfound)
         if (!this._onLocationFound) {
           this._onLocationFound = (e) => {
+            if (!this.map) return;
             console.log('loadUserMarker: posizione trovata', e.latlng);
             //     Se non abbiamo ancora un marker creiamolo, altrimenti aggiorniamo la posizione
             if (!this.userMarker) {
