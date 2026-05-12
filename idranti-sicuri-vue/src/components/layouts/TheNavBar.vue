@@ -9,7 +9,12 @@
       </router-link>
       <h1 v-else>Idranti Sicuri VR</h1>
     </div>
-    <div id="navbar-right" v-if="$route.path !== '/add-idr'"><router-link style="text-decoration: none;" to="/add-idr"><BaseButton  class="btn-primary">Segnala idrante</BaseButton></router-link></div>
+    <div id="navbar-right" >
+      <!-- Pulsante di login
+      <router-link v-if="$route.path !== '/login'" style="text-decoration: none;" to="/login"><BaseButton  class="btn-secondary">Login</BaseButton></router-link>
+        -->
+      <router-link v-if="$route.path !== '/add-idr' && $route.path !== '/login'" style="text-decoration: none;" to="/add-idr"><BaseButton  class="btn-primary">Segnala idrante</BaseButton></router-link>
+    </div>
   </nav>
 </template>
 

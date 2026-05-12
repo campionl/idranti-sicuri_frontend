@@ -90,6 +90,7 @@ export default {
       this.markersLayer = L.layerGroup().addTo(this.map);
       this.loadPins();
 
+      //se si torna da una pagina diversa, guarda l'ultimo pin visualizzato (se ha la posizione dell'utente va comunque all'utente)
       const lastId = this.$store.state.map.lastViewedPin;
       if (lastId) {
         const pin = this.$store.state.map.pins.find(p => p.id === lastId);
@@ -98,7 +99,7 @@ export default {
           this.justFlewToPin = true;
         }
         this.$store.commit('map/setLastViewedPin', null);
-      }
+      } 
       if (this.type === 'add-idr') {
         this.map.on('click', (e) => {
           this.$emit('coords-selected', [e.latlng.lat, e.latlng.lng]);
@@ -114,7 +115,7 @@ export default {
         try {
           this.geoloc = await this.getLocalCoordinates();
           this.loadUserMarker();
-          this.loadPins();
+          this.loadPins(); // se ha la posizione utente deve ricaricarli per permettere l'apertura della strada su maps (bottone "apri su maps")
         } catch (e) {
           console.error("Errore nel recuperare la posizione:", e);
         }
@@ -152,11 +153,6 @@ export default {
     
     async getLocalCoordinates() {
       return new Promise((resolve, reject) => {
-        if (!("geolocation" in navigator)) {
-          reject(new Error("Localizzazione non supportata"));
-          return;
-        }
-
         const watchId = navigator.geolocation.watchPosition(
           (position) => {
             navigator.geolocation.clearWatch(watchId);
@@ -202,7 +198,6 @@ export default {
         fields: fields
       });
       console.log('addPin: aggiunto', newId, coords);
-      this.loadPins();
     },
 
     // Aggiorna i marker sulla mappa leggendo i pin dallo store.
@@ -270,10 +265,7 @@ export default {
     // - Avvia `this.map.locate({ watch: true })` per ottenere aggiornamenti in tempo reale
     loadUserMarker() {
       console.log('loadUserMarker: avvio');
-      if (!this.map) {
-        console.warn('loadUserMarker: mappa non disponibile, skip');
-        return;
-      }
+    
       //    Definizione dell'icona usata per il marker utente
       const userPin = new L.Icon({
         iconUrl: '../assets/userMarker.png',

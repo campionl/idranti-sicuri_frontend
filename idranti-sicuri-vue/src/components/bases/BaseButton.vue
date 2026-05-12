@@ -25,22 +25,18 @@ export default {
     padding: 3px 10px;
     margin: 0 4px;
     cursor: pointer;
+    border: none;
     box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.1);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     text-decoration: none;
+    background-color: #ff0000;
+    color: white;
 }
 
 .btn-primary a {
     text-decoration: none;
 }
 
-.btn-primary {
-    background-color: #ff0000;
-    color: white;
-    border: none;
-    font-style: none;
-    text-decoration: none;
-}
 
 .btn-primary:disabled {
     background-color: #999999;
@@ -53,7 +49,9 @@ export default {
 .btn-secondary {
     background-color: #ffffff;
     color: #000000;
-    border: 1px solid #000000;
+    border: none;
+    box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     border-radius: 15px;
     padding: 3px 10px;
     margin: 0 4px;

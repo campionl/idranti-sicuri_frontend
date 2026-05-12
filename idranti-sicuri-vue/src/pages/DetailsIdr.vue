@@ -48,7 +48,7 @@
             </tr>
           </table>
           <div id="actionBtn">
-            <router-link to="/" class="btn-secondary" :prop="id">Annulla</router-link>
+            <router-link to="/" class="btn-secondary" :prop="id">Torna alla mappa</router-link>
             <router-link :to="`/edit-idr/${id}`" class="btn-primary">Modifica</router-link>
             <router-link :to="`/delete-idr/${id}`" class="btn-primary">Elimina</router-link>
           </div>
